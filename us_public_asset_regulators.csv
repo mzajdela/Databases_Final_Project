@@ -1,0 +1,6 @@
+Regulator_ID,Regulator_Name,Regulator_Type,Address,Contact_Information_Website,Contact_Information_Phone_Number
+1,U.S. Securities and Exchange Commission (SEC),Federal Agency,"100 F Street NE, Washington, DC 20549",https://www.sec.gov,202-551-6551
+2,Commodity Futures Trading Commission (CFTC),Federal Agency,"1155 21st Street NW, Washington, DC 20581",https://www.cftc.gov,202-418-5000
+3,Financial Industry Regulatory Authority (FINRA),Self-Regulatory Organization,"1735 K Street NW, Washington, DC 20006",https://www.finra.org,301-590-6500
+4,National Futures Association (NFA),Self-Regulatory Organization,"300 S. Riverside Plaza, Suite 1800, Chicago, IL 60606",https://www.nfa.futures.org,312-781-1300
+5,Municipal Securities Rulemaking Board (MSRB),Self-Regulatory Organization,"1300 I Street NW, Suite 1000, Washington, DC 20005",https://www.msrb.org,202-838-1500
