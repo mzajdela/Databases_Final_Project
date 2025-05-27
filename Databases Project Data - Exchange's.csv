@@ -1,12 +1,12 @@
-ExchangeId,Exchange Name,Address,Trading Hours,Time Zone,Has Physical Trading Floor
-0,NYSE,"11 Wall Street, New York, NY 10005, USA",09:30a-04:00p,ET,TRUE
-1,NASDAQ,"151 W 42nd Street, New York, NY 10036",09:30a-04:00p,ET,FALSE
-2,CBOE,"433 W. Van Buren Street, Chicago, IL 60607",09:30a-04:00p,ET,TRUE
-3,CBOE BZX,"400 South LaSalle Street, Chicago, IL 60605",09:30a-04:00p,ET,FALSE
-4,CBOE BYX,"400 South LaSalle Street, Chicago, IL 60605",09:30a-04:00p,ET,FALSE
-5,CBOE EDGA,"433 W. Van Buren Street, Chicago, IL 60607",09:30a-04:00p,ET,FALSE
-6,CBOE EDGX,"433 W. Van Buren Street, Chicago, IL 60607",09:30a-04:00p,ET,FALSE
-7,CBOE C2,"433 West Van Buren Street, Chicago, IL 60607",09:30a-04:00p,ET,FALSE
-8,IEX,"3 World Trade Center, 175 Greenwhich Street, 58th Floor, New York, NY, 10007",09:30a-04:00p,ET,FALSE
-9,MIAX,"7 Roszel Road, Suite 1A, Princeton, NJ 08540",09:30a-04:00p,ET,FALSE
-10,CME,"20 South Wacker Drive, Chicago, IL 60606, USA",6:00p – 5:00p,ET,TRUE
+Exchange Name,Address,Trading Hours,Time Zone,Has Physical Trading Floor
+NYSE,"11 Wall Street, New York, NY 10005, USA",09:30a-04:00p,ET,TRUE
+NASDAQ,"151 W 42nd Street, New York, NY 10036",09:30a-04:00p,ET,FALSE
+CBOE,"433 W. Van Buren Street, Chicago, IL 60607",09:30a-04:00p,ET,TRUE
+CBOE BZX,"400 South LaSalle Street, Chicago, IL 60605",09:30a-04:00p,ET,FALSE
+CBOE BYX,"400 South LaSalle Street, Chicago, IL 60605",09:30a-04:00p,ET,FALSE
+CBOE EDGA,"433 W. Van Buren Street, Chicago, IL 60607",09:30a-04:00p,ET,FALSE
+CBOE EDGX,"433 W. Van Buren Street, Chicago, IL 60607",09:30a-04:00p,ET,FALSE
+CBOE C2,"433 West Van Buren Street, Chicago, IL 60607",09:30a-04:00p,ET,FALSE
+IEX,"3 World Trade Center, 175 Greenwhich Street, 58th Floor, New York, NY, 10007",09:30a-04:00p,ET,FALSE
+MIAX,"7 Roszel Road, Suite 1A, Princeton, NJ 08540",09:30a-04:00p,ET,FALSE
+CME,"20 South Wacker Drive, Chicago, IL 60606, USA",6:00p – 5:00p,ET,TRUE
