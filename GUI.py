@@ -36,16 +36,21 @@ def close_connection(cursor, myConnection) -> None:
     cursor.close()
     myConnection.close()
 
-def run_query(numQuery: int):
+def run_query(numQuery: str) -> str:
     """
-    This method runs the first query in the list
-    """
-    myConnection, cursor = create_connection('root', 'cmo5', 'localhost', 'ExchangeInfo')
+    This method runs the selected query and returns the results in the GUI.
 
-    # Run Query and display results
+    Parameters:
+        numQuery: str passed in from Query text box
+    
+    Returns: (str) Query Results
+    """
+    # Create MySQL Connection
+    myConnection, cursor = create_connection('root', 'cmo5', 'localhost', 'ExchangeInfo')
     numQuery = int(numQuery)
     result = ""
 
+    # Run Query and display results
     if numQuery == 1:
         query = """
                 SELECT * FROM ExchangeInfo.Holiday
@@ -61,9 +66,50 @@ def run_query(numQuery: int):
             result += f"Holiday Date = {row[3]}\n"
             result += f"Calendar Year = {row[4]}\n"
             result += "\n"
+    elif numQuery == 7:
+        query = """
+                SELECT h.HolidayName
+                FROM ExchangeInfo.Holidays AS h
+                JOIN Is_Observed_By AS o ON h.HolidayId = o.HolidayId
+                JOIN Exchanges AS e ON e.ExchangeId = o.ExchangeId
+                WHERE e.ExchangeName = 'CBOE'
+                AND h.HolidayName NOT IN
+                    (
+                    SELECT h.HolidayName, h.HolidayDate
+                    FROM ExchangeInfo.Holidays AS h
+                    JOIN Is_Observed_By AS o ON h.HolidayId = o.HolidayId
+                    JOIN Exchanges AS e ON e.ExchangeId = o.ExchangeId
+                    WHERE e.ExchangeName = 'CME'
+                    );
+                """
+        cursor.execute(query)
+        query_results = cursor.fetchall()
+
+        for row in query_results:
+            result += f"Holiday Name = {row[0]}\n"
+            result += "\n"
+    elif numQuery == 8:
+        query = """
+                SELECT COUNT(o.HolidayId), e.ExchangeId
+                FROM ExchangeInfo.Exchanges AS e
+                JOIN ExchangeInfo.Is_Observed_By AS o ON e.ExchangeId = o.ExchangeId
+                JOIN ExchangeInfo.Holidays AS h ON o.HolidayId = h.HolidayId
+                WHERE h.HolidayDate >= '06-01-2025'
+                AND h.HolidayDate < '09-01-2025'
+                AND h.Is_Early_Close = True
+                GROUP BY e.ExchangeId;
+                """
+        cursor.execute(query)
+        query_results = cursor.fetchall()
+
+        for row in query_results:
+            result += f"Holiday Count = {row[0]}\n"
+            result += f"Exchange Name = {row[1]}\n"
+            result += "\n"
     else:
         result = "Incorrect entry. Please enter a number 1-10 to display query results."
 
+    # Close MySQL Connection
     close_connection(cursor, myConnection)
     return result
 
@@ -135,8 +181,8 @@ if __name__ == "__main__":
         "4. Display all exchanges that are subject to SEC regulations and have TRIP listed\n"
         "5. Display all exchange names located in either Chicago and New York\n"
         "6. How many products are only listed on one exchange?\n"
-        "7. Which CME products are closed on Christmas and New Year’s Day?\n"
-        "8. What are the listed trading hours for each exchange on all holidays?\n"
+        "7. Display HolidayName for any holidays that observed by the CME exchange but not by the CBOE exchange.\n"
+        "8. Count the number of holidays per exchange with early close between June and September.\n"
         "9. Which Broker-Dealers are not members of NYSE?\n"
         "10. What non-weekend off days do Broker-Dealers have?"   
     )
@@ -146,33 +192,31 @@ if __name__ == "__main__":
     top_frame.pack(fill=tk.X)
     query = tk.Label(top_frame, text=query_list_text, wraplength=400, justify="left")
     query.grid(row=0, column=0, columnspan=2, sticky="w", pady=(0, 5))
-    instruction_label = tk.Label(top_frame, text="Enter a number to run the corresponding query:", justify="left")
+    instruction_label = tk.Label(top_frame, text="Enter a number to run the corresponding query:", justify="left", font=("Arial", 10, "bold"))
     instruction_label.grid(row=1, column=0, sticky="w", pady=5)
     query_input = tk.Entry(top_frame, width=5)
     query_input.grid(row=1, column=1, sticky="w", padx=5, pady=5)
-    # Set the submit_button command to this commented line for result
-    # command=lambda: run_query(int(entry.get()) - 1)
     run_query_button = tk.Button(top_frame, text="Submit", command=lambda: result_label.config(text=run_query(query_input.get())))
     run_query_button.grid(row=1, column=2, sticky="w", padx=5, pady=5)
 
     # Middle Frame - Display Results
     middle_frame = tk.Frame(root, padx=10, pady=10)
     middle_frame.pack(fill=tk.X)
-    result_label = tk.Label(middle_frame, text="", anchor="w", width=60)
+    result_label = tk.Label(middle_frame, text="", anchor="w", width=60, fg="green")
     result_label.grid(row=0, column=0, sticky="w")
 
     # Bottom Frame - Insert Statements
     # Insert Asset Class
     bottom_frame = tk.Frame(root, padx=10, pady=10)
     bottom_frame.pack(fill=tk.X)
-    asset_class_label = tk.Label(bottom_frame, text="Insert new Asset Class (AssetClassName):")
+    asset_class_label = tk.Label(bottom_frame, text="Insert new Asset Class (AssetClassName):", justify="left", font=("Arial", 10, "bold"))
     asset_class_label.grid(row=0, column=0, sticky="e", padx=5, pady=5)
     asset_class_text_box = tk.Entry(bottom_frame)
     asset_class_text_box.grid(row=0, column=1, sticky="w", padx=5, pady=5)
     insert_button = tk.Button(bottom_frame, text="Submit", command=lambda: result_label.config(text=insert_asset_class(asset_class_text_box.get())))
     insert_button.grid(row=0, column=2, padx=5, pady=5)
     # Insert Exchange
-    exchange_label = tk.Label(bottom_frame, text="Insert new Exchange Info (ExchangeName,Address,TimeZone,HasPhysicalTradingFloor):")
+    exchange_label = tk.Label(bottom_frame, text="Insert new Exchange (ExchangeName,Address,TimeZone,HasPhysicalTradingFloor):", justify="left", font=("Arial", 10, "bold"))
     exchange_label.grid(row=1, column=0, sticky="e", padx=5, pady=5)
     exchange_text_box = tk.Entry(bottom_frame)
     exchange_text_box.grid(row=1, column=1, sticky="w", padx=5, pady=5)
