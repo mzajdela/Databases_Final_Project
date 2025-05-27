@@ -69,16 +69,16 @@ AND h.Is_Early_Close = True
 GROUP BY e.ExchangeId
 
 -- Display HolidayName and HolidayDate for any holidays that are contained in the CBOE exchange but not in the CME exchange
-SELECT h.HolidayName, h.HolidayDate
-FROM Is_Observed_By AS o
-JOIN Holidays AS h ON h.HolidayId = o.HolidayId
+SELECT h.HolidayName
+FROM ExchangeInfo.Holidays AS h
+JOIN Is_Observed_By AS o ON h.HolidayId = o.HolidayId
 JOIN Exchanges AS e ON e.ExchangeId = o.ExchangeId
 WHERE e.ExchangeName = 'CBOE'
-NOT IN
+AND h.HolidayName NOT IN
 	(
 	SELECT h.HolidayName, h.HolidayDate
-	FROM Is_Observed_By AS o
-	JOIN Holidays AS h ON h.HolidayId = o.HolidayId
+	FROM ExchangeInfo.Holidays AS h
+	JOIN Is_Observed_By AS o ON h.HolidayId = o.HolidayId
 	JOIN Exchanges AS e ON e.ExchangeId = o.ExchangeId
 	WHERE e.ExchangeName = 'CME'
 	);
