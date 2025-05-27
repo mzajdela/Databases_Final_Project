@@ -19,18 +19,191 @@ CREATE TABLE Product (
     PRIMARY KEY (Symbol, Asset_Class_Id, ExchangeId)
 );
 
-CREATE TABLE ExchangeInfo.Holiday (
-    Holiday_Id INT,
-    Holiday_Name VARCHAR(255),
-    Is_Early_Close bool,
-    Date DATE,
-    Calendar_Year INT
+-- Table: Holidays
+CREATE TABLE Holidays (
+    HolidayId INT,
+    HolidayName VARCHAR(255),
+    IsEarlyClose bool,
+    HolidayDate DATE,
+    CalendarYear INT
 );
 
-CREATE TABLE ExchangeInfo.Is_Observed_By (
-    Holiday_Id INT,
-    Exchange_Id INT
+-- Insert data into Holidays
+INSERT INTO Holidays(HolidayId, HolidayName, IsEarlyClose, HolidayDate, CalendarYear)
+VALUES
+	(1, "New Year's Day", False, "2025-01-01", 2025),
+	(2, "National Day of Mourning - Jimmy Carter", False, "2025-01-09", 2025),
+	(3, "Martin Luther King Jr. Day", False, "2025-01-20", 2025),
+	(4, "Presidents' Day", False, "2025-02-17", 2025),
+	(5, "Good Friday", False, "2025-04-18", 2025),
+	(6, "Memorial Day", False, "2025-05-26", 2025),
+	(7, "Juneteenth Holiday", False, "2025-06-19", 2025),
+	(8, "Independence Day Early Close", True, "2025-07-03", 2025),
+	(9, "Independence Day", False, "2025-07-04", 2025),
+	(10, "Labor Day", False, "2025-09-01", 2025),
+	(11, "Thanksgiving Day", False, "2025-11-27", 2025),
+	(12, "Thanksgiving Early Close", True, "2025-11-28", 2025),
+	(13, "Christmas Early Close", True, "2025-12-24", 2025),
+	(14, "Christmas Day", False, "2025-12-25", 2025);
+
+-- Table: Is_Observed_By
+CREATE TABLE Is_Observed_By (
+    HolidayId INT,
+    ExchangeId INT
 );
+
+-- Insert Data into Is_Observed_By
+INSERT INTO Is_Observed_By(HolidayId, ExchangeId)
+VALUES
+	(1, 0),  -- NYSE
+	(3, 0),
+	(4, 0),
+	(5, 0),
+	(6, 0),
+	(7, 0),
+	(8, 0),
+	(9, 0),
+	(10, 0),
+	(11, 0),
+	(12, 0),
+	(13, 0),
+	(14, 0),
+	(1, 1),  -- NASDAQ
+	(3, 1),
+	(4, 1),
+	(5, 1),
+	(6, 1),
+	(7, 1),
+	(8, 1),
+	(9, 1),
+	(10, 1),
+	(11, 1),
+	(12, 1),
+	(13, 1),
+	(14, 1),
+	(1, 2),  -- CBOE BZX
+	(2, 2),
+	(3, 2),
+	(4, 2),
+	(5, 2),
+	(6, 2),
+	(7, 2),
+	(8, 2),
+	(9, 2),
+	(10, 2),
+	(11, 2),
+	(12, 2),
+	(13, 2),
+	(14, 2),
+	(1, 3),  -- CBOE BYX
+	(2, 3),
+	(3, 3),
+	(4, 3),
+	(5, 3),
+	(6, 3),
+	(7, 3),
+	(8, 3),
+	(9, 3),
+	(10, 3),
+	(11, 3),
+	(12, 3),
+	(13, 3),
+	(14, 3),
+	(1, 4),  -- CBOE EDGA
+	(2, 4),
+	(3, 4),
+	(4, 4),
+	(5, 4),
+	(6, 4),
+	(7, 4),
+	(8, 4),
+	(9, 4),
+	(10, 4),
+	(11, 4),
+	(12, 4),
+	(13, 4),
+	(14, 4),
+	(1, 5),  -- CBOE EDGX
+	(2, 5),
+	(3, 5),
+	(4, 5),
+	(5, 5),
+	(6, 5),
+	(7, 5),
+	(8, 5),
+	(9, 5),
+	(10, 5),
+	(11, 5),
+	(12, 5),
+	(13, 5),
+	(14, 5),
+	(1, 6),  -- CBOE C2
+	(2, 6),
+	(3, 6),
+	(4, 6),
+	(5, 6),
+	(6, 6),
+	(7, 6),
+	(8, 6),
+	(9, 6),
+	(10, 6),
+	(11, 6),
+	(12, 6),
+	(13, 6),
+	(14, 6),
+	(1, 7),  -- CBOE
+	(2, 7),
+	(3, 7),
+	(4, 7),
+	(5, 7),
+	(6, 7),
+	(7, 7),
+	(8, 7),
+	(9, 7),
+	(10, 7),
+	(11, 7),
+	(12, 7),
+	(13, 7),
+	(14, 7),
+	(1, 8),  -- IEX
+	(3, 8),
+	(4, 8),
+	(5, 8),
+	(6, 8),
+	(7, 8),
+	(8, 8),
+	(9, 8),
+	(10, 8),
+	(11, 8),
+	(12, 8),
+	(13, 8),
+	(14, 8),
+	(1, 9),  -- MIAX
+	(3, 9),
+	(4, 9),
+	(5, 9),
+	(6, 9),
+	(7, 9),
+	(8, 9),
+	(9, 9),
+	(10, 9),
+	(11, 9),
+	(12, 9),
+	(13, 9),
+	(14, 9),
+	(1, 10),  -- CME
+	(3, 10),
+	(4, 10),
+	(5, 10),
+	(6, 10),
+	(7, 10),
+	(8, 10),
+	(9, 10),
+	(10, 10),
+	(11, 10),
+	(12, 10),
+	(13, 10),
+	(14, 10);
 
 -- Table: Regulators
 CREATE TABLE ExchangeInfo.Regulators (
@@ -84,24 +257,6 @@ INSERT INTO ExchangeInfo.Is_Supervised_By VALUES
 (9, 3),  -- MIAX - FINRA
 (10, 2), -- CME - CFTC
 (10, 4); -- CME - NFA
-
-
-INSERT INTO ExchangeInfo.Holiday(Holiday_Id, Holiday_Name, Is_Early_Close, Holiday_Date, Calendar_Year)
-VALUES
-	(1, "New Year's Day", False, "2025-01-01", 2025),
-	(2, "National Day of Mourning - Jimmy Carter", False, "2025-01-09", 2025),
-	(3, "Martin Luther King Jr. Day", False, "2025-01-20", 2025),
-	(4, "Presidents' Day", False, "2025-02-17", 2025),
-	(5, "Good Friday", False, "2025-04-18", 2025),
-	(6, "Memorial Day", False, "2025-05-26", 2025),
-	(7, "Juneteenth Holiday", False, "2025-06-19", 2025),
-	(8, "Independence Day Early Close", True, "2025-07-03", 2025),
-	(9, "Independence Day", False, "2025-07-04", 2025),
-	(10, "Labor Day", False, "2025-09-01", 2025),
-	(11, "Thanksgiving Day", False, "2025-11-27", 2025),
-	(12, "Thanksgiving Early Close", True, "2025-11-28", 2025),
-	(13, "Christmas Early Close", True, "2025-12-24", 2025),
-	(14, "Christmas Day", False, "2025-12-25", 2025);
 
 
 SELECT * FROM Product
