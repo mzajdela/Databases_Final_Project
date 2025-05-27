@@ -90,21 +90,23 @@ def run_query(numQuery: str) -> str:
             result += "\n"
     elif numQuery == 8:
         query = """
-                SELECT COUNT(o.HolidayId), e.ExchangeId
+                SELECT e.ExchangeName, COUNT(o.HolidayId) AS HolidayCount
                 FROM ExchangeInfo.Exchanges AS e
-                JOIN ExchangeInfo.Is_Observed_By AS o ON e.ExchangeId = o.ExchangeId
-                JOIN ExchangeInfo.Holidays AS h ON o.HolidayId = h.HolidayId
-                WHERE h.HolidayDate >= '06-01-2025'
-                AND h.HolidayDate < '09-01-2025'
-                AND h.Is_Early_Close = True
-                GROUP BY e.ExchangeId;
+                JOIN ExchangeInfo.Is_Observed_By AS o
+                    ON e.ExchangeId = o.ExchangeId
+                JOIN ExchangeInfo.Holiday AS h
+                    ON o.HolidayId = h.HolidayId
+                WHERE h.Holiday_Date >= '2025-06-01'
+                AND h.Holiday_Date < '2025-09-01'
+                AND h.IsEarlyClose = True
+                GROUP BY e.ExchangeName;
                 """
         cursor.execute(query)
         query_results = cursor.fetchall()
 
         for row in query_results:
-            result += f"Holiday Count = {row[0]}\n"
-            result += f"Exchange Name = {row[1]}\n"
+            result += f"Exchange Name = {row[0]}\n"
+            result += f"Holiday Count = {row[1]}\n"
             result += "\n"
     else:
         result = "Incorrect entry. Please enter a number 1-10 to display query results."
