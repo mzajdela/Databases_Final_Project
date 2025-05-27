@@ -2,12 +2,20 @@ DROP DATABASE IF EXISTS ExchangeInfo;
 CREATE DATABASE ExchangeInfo;
 USE ExchangeInfo;
 
+-- Table: Exchange
 CREATE TABLE Exchange (
+    ExchangeId INT AUTO_INCREMENT PRIMARY KEY
     ExchangeName VARCHAR(255),
     Address VARCHAR(255),
     TradingHours VARCHAR(255),
     TimeZone VARCHAR(100),
     HasPhysicalTradingFloor BOOLEAN
+);
+
+-- Table: AssetClass
+CREATE TABLE AssetClass (
+    AssetClassId INT AUTO_INCREMENT PRIMARY KEY,
+    AssetClassName VARCHAR(255)
 );
 
 CREATE TABLE Product (
