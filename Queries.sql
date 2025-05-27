@@ -28,3 +28,9 @@ FROM Product p
 JOIN Exchange e ON p.ExchangeId = e.ExchangeId
 WHERE e.ExchangeName = 'CME'
 GROUP BY p.Contract_Type;
+
+--All exchanges located in either Chicago or New York
+SELECT ExchangeName
+FROM Exchange
+WHERE Address LIKE '%Chicago%'
+   OR Address LIKE '%New York%';

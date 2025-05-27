@@ -7,6 +7,6 @@ ExchangeId,Exchange Name,Address,Trading Hours,Time Zone,Has Physical Trading Fl
 5,CBOE EDGA,"433 W. Van Buren Street, Chicago, IL 60607",09:30a-04:00p,ET,FALSE
 6,CBOE EDGX,"433 W. Van Buren Street, Chicago, IL 60607",09:30a-04:00p,ET,FALSE
 7,CBOE C2,"433 West Van Buren Street, Chicago, IL 60607",09:30a-04:00p,ET,FALSE
-8,IEX,"3 World Trade Center, 175 Greenwhich Street, 58th Floor",09:30a-04:00p,ET,FALSE
+8,IEX,"3 World Trade Center, 175 Greenwhich Street, 58th Floor, New York, NY, 10007",09:30a-04:00p,ET,FALSE
 9,MIAX,"7 Roszel Road, Suite 1A, Princeton, NJ 08540",09:30a-04:00p,ET,FALSE
 10,CME,"20 South Wacker Drive, Chicago, IL 60606, USA",6:00p – 5:00p,ET,TRUE
