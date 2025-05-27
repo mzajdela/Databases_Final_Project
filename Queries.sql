@@ -44,4 +44,16 @@ FROM (
     HAVING COUNT(*) = 1
 ) AS single_listings;
 
---Test
+--All Exchanges that are supervised by the SEC and have TRIP listed
+SELECT 
+    e.Exchange_Name,
+    r.Regulator_Name,
+    p.Symbol AS Listed_Symbol
+FROM 
+    Product p
+JOIN Exchanges e ON p.ExchangeId = e.Exchange_ID
+JOIN Is_Supervised_By isb ON e.Exchange_ID = isb.Exchange_ID
+JOIN Regulators r ON isb.Regulator_ID = r.Regulator_ID
+WHERE 
+    r.Regulator_ID = 1
+    AND p.Symbol = 'TRIP';
