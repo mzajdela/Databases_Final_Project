@@ -57,3 +57,15 @@ JOIN Regulators r ON isb.Regulator_ID = r.Regulator_ID
 WHERE 
     r.Regulator_ID = 1
     AND p.Symbol = 'TRIP';
+
+-- Count the number of holidays per exchange with early close between June and September
+SELECT COUNT(o.HolidayId), e.ExchangeId
+FROM Exchanges AS e
+JOIN Is_Observed_By AS o
+	ON e.ExchangeId = o.ExchangeId
+JOIN Holiday AS h
+	ON o.HolidayId = h.HolidayId
+WHERE h.HolidayDate >= '06-01-2025'
+AND h.HolidayDate < '09-01-2025'
+AND h.Is_Early_Close = True
+GROUP BY e.ExchangeId
