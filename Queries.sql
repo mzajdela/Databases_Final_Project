@@ -61,11 +61,24 @@ WHERE
 -- Count the number of holidays per exchange with early close between June and September
 SELECT COUNT(o.HolidayId), e.ExchangeId
 FROM Exchanges AS e
-JOIN Is_Observed_By AS o
-	ON e.ExchangeId = o.ExchangeId
-JOIN Holiday AS h
-	ON o.HolidayId = h.HolidayId
+JOIN Is_Observed_By AS o ON e.ExchangeId = o.ExchangeId
+JOIN Holiday AS h ON o.HolidayId = h.HolidayId
 WHERE h.HolidayDate >= '06-01-2025'
 AND h.HolidayDate < '09-01-2025'
 AND h.Is_Early_Close = True
 GROUP BY e.ExchangeId
+
+-- Display HolidayName and HolidayDate for any holidays that are contained in the CBOE exchange but not in the CME exchange
+SELECT h.HolidayName, h.HolidayDate
+FROM Is_Observed_By AS o
+JOIN Holidays AS h ON h.HolidayId = o.HolidayId
+JOIN Exchanges AS e ON e.ExchangeId = o.ExchangeId
+WHERE e.ExchangeName = 'CBOE'
+NOT IN
+	(
+	SELECT h.HolidayName, h.HolidayDate
+	FROM Is_Observed_By AS o
+	JOIN Holidays AS h ON h.HolidayId = o.HolidayId
+	JOIN Exchanges AS e ON e.ExchangeId = o.ExchangeId
+	WHERE e.ExchangeName = 'CME'
+	);
