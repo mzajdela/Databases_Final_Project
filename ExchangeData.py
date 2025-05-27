@@ -16,7 +16,6 @@ df = pd.read_csv("Databases Project Data - Exchange's.csv", index_col=False)
 
 # Rename columns explicitly
 df = df.rename(columns={
-    "ExchangeId": "ExchangeId",
     "Exchange Name": "ExchangeName",
     "Address": "Address",
     "Trading Hours": "TradingHours",
@@ -25,7 +24,7 @@ df = df.rename(columns={
 })
 
 # Ensure correct column order
-expected_columns = ['ExchangeId', 'ExchangeName', 'Address', 'TradingHours', 'TimeZone', 'HasPhysicalTradingFloor']
+expected_columns = ['ExchangeName', 'Address', 'TradingHours', 'TimeZone', 'HasPhysicalTradingFloor']
 df = df[expected_columns]
 
 # Convert to list of tuples
@@ -38,13 +37,12 @@ print(f"Length of first row: {len(data_list[0])}")
 # Insert query
 query = """
 INSERT INTO Exchange (
-    ExchangeId,
     ExchangeName,
     Address,
     TradingHours,
     TimeZone,
     HasPhysicalTradingFloor
-) VALUES (%s, %s, %s, %s, %s, %s)
+) VALUES (%s, %s, %s, %s, %s)
 """
 
 cursorObject.executemany(query, data_list)
