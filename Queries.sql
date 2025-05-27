@@ -43,3 +43,5 @@ FROM (
     GROUP BY Symbol
     HAVING COUNT(*) = 1
 ) AS single_listings;
+
+--Test
