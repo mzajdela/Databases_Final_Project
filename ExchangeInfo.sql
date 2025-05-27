@@ -15,7 +15,8 @@ CREATE TABLE Product (
     Contract_Type VARCHAR(50),
     Product_Name VARCHAR(255),
     Asset_Class_Id INT,
-    PRIMARY KEY (Symbol, Asset_Class_Id)
+    ExchangeId INT,
+    PRIMARY KEY (Symbol, Asset_Class_Id, ExchangeId)
 );
 
 CREATE TABLE ExchangeInfo.Holiday (
