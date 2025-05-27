@@ -34,3 +34,12 @@ SELECT ExchangeName
 FROM Exchange
 WHERE Address LIKE '%Chicago%'
    OR Address LIKE '%New York%';
+
+--All products that are only listed at one exchange
+SELECT COUNT(*) AS num_single_exchange_products
+FROM (
+    SELECT Symbol
+    FROM Product
+    GROUP BY Symbol
+    HAVING COUNT(*) = 1
+) AS single_listings;
