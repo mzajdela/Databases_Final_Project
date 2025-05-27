@@ -29,5 +29,12 @@ SELECT * FROM Product
 WHERE Contract_Type = "Option"
 LIMIT 10
 
+
+SELECT * FROM Product
+LIMIT 10
+
 SELECT * FROM Exchange
+LIMIT 10
+
+SELECT * FROM AssetClass
 LIMIT 10
