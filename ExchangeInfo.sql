@@ -286,6 +286,19 @@ CREATE TABLE Is_A_Member_Of(
         	ON DELETE CASCADE
 );
 
+CREATE TABLE Trades(
+	CIK		INTEGER		NOT NULL,
+	Product_Symbol	VARCHAR(20) 	NOT NULL,
+    	Asset_Class_Id 	INT		NOT NULL,
+    	ExchangeId	INT		NOT NULL,
+	FOREIGN KEY(CIK) 
+		REFERENCES Broker_Dealer(CIK)
+		ON DELETE CASCADE,
+	FOREIGN KEY(Product_Symbol, Asset_Class_Id, ExchangeId) 
+		REFERENCES Product(Symbol, Asset_Class_Id, ExchangeId)
+        	ON DELETE CASCADE
+);
+
 
 SELECT * FROM Product
 WHERE Contract_Type = "Future"
