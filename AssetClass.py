@@ -12,7 +12,7 @@ cursorObject = myConnection.cursor()
 
 
 df = pd.DataFrame({
-    "AssetClassId": [0, 1, 2],
+    "AssetClassId": [1, 2, 3],
     "AssetClassName": ["Stock", "Option", "Future"]
 })
 

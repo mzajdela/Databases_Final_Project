@@ -12,17 +12,17 @@ cursorObject = myConnection.cursor()
 
 
 EXCHANGE_IDS = {
-    'NYSE': 0,
-    'NASDAQ': 1,
-    'CBOE': 2,
-    'CBOE BZX': 3,
-    'CBOE BYX': 4,
-    'CBOE EDGA': 5,
-    'CBOE EDGX': 6,
-    'CBOE C2': 7,
-    'IEX': 8,
-    'MIAX': 9,
-    'CME': 10
+    'NYSE': 1,
+    'NASDAQ': 2,
+    'CBOE': 3,
+    'CBOE BZX': 4,
+    'CBOE BYX': 5,
+    'CBOE EDGA': 6,
+    'CBOE EDGX': 7,
+    'CBOE C2': 8,
+    'IEX': 9,
+    'MIAX': 10,
+    'CME': 11
 }
 
 
@@ -38,7 +38,7 @@ stock_df = stock_df[stock_df['Symbol'].astype(str).str.strip() != '']
 stock_df = stock_df[stock_df['Product_Name'].astype(str).str.strip() != '']
 stock_df['Symbol'] = stock_df['Symbol'].astype(str).str.strip().str[:20]
 stock_df['Contract_Type'] = 'Stock'
-stock_df['Asset_Class_Id'] = 0
+stock_df['Asset_Class_Id'] = 1
 stock_df = stock_df[['Symbol', 'Contract_Type', 'Product_Name', 'Asset_Class_Id', 'ExchangeId']]
 
 
@@ -50,7 +50,7 @@ miax_pearl_df = miax_pearl_df[miax_pearl_df['Underlying Name'].astype(str).str.s
 miax_pearl_df['Symbol'] = miax_pearl_df['Options Symbol'].astype(str).str[:20]
 miax_pearl_df['Product_Name'] = miax_pearl_df['Underlying Name']
 miax_pearl_df['Contract_Type'] = 'Option'
-miax_pearl_df['Asset_Class_Id'] = 1
+miax_pearl_df['Asset_Class_Id'] = 2
 miax_pearl_df['ExchangeId'] = EXCHANGE_IDS['MIAX']
 miax_pearl_df = miax_pearl_df[['Symbol', 'Contract_Type', 'Product_Name', 'Asset_Class_Id', 'ExchangeId']]
 
@@ -67,7 +67,7 @@ def load_cboe_csv(path, exchange_id, has_header=True):
     df = df[df['Symbol'] != '']
     df = df[df['Product_Name'] != '']
     df['Contract_Type'] = 'Option'
-    df['Asset_Class_Id'] = 1
+    df['Asset_Class_Id'] = 2
     df['ExchangeId'] = exchange_id
     return df[['Symbol', 'Contract_Type', 'Product_Name', 'Asset_Class_Id', 'ExchangeId']]
 
@@ -97,7 +97,7 @@ iex_df['Product_Name'] = iex_df['Product_Name'].astype(str).str.strip()
 iex_df = iex_df[iex_df['Symbol'] != '']
 iex_df = iex_df[iex_df['Product_Name'] != '']
 iex_df['Contract_Type'] = 'Stock'
-iex_df['Asset_Class_Id'] = 0
+iex_df['Asset_Class_Id'] = 1
 iex_df['ExchangeId'] = EXCHANGE_IDS['IEX']
 iex_df = iex_df[['Symbol', 'Contract_Type', 'Product_Name', 'Asset_Class_Id', 'ExchangeId']]
 

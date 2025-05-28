@@ -42,108 +42,191 @@ def run_query(numQuery: str) -> str:
 
     Parameters:
         numQuery: str passed in from Query text box
-    
+
     Returns: (str) Query Results
     """
     # Create MySQL Connection
-    myConnection, cursor = create_connection('root', 'cmo5', 'localhost', 'ExchangeInfo')
+    myConnection, cursor = create_connection('root', '$A!nts2497', 'localhost', 'ExchangeInfo')
     numQuery = int(numQuery)
     result = ""
 
-    # Run Query and display results
     if numQuery == 1:
         query = """
-                SELECT * FROM ExchangeInfo.Holiday
-                LIMIT 5;
-                """
+            SELECT COUNT(DISTINCT p.Symbol) AS NumFuturesOnlyOnCME
+            FROM Product p
+            JOIN Exchange e ON p.ExchangeId = e.ExchangeId
+            WHERE e.ExchangeName = 'CME'
+              AND p.Contract_Type = 'Future'
+              AND p.Symbol NOT IN (
+                  SELECT Symbol
+                  FROM Product
+                  WHERE Contract_Type = 'Option'
+                    AND ExchangeId = e.ExchangeId
+              );
+        """
         cursor.execute(query)
-        query_results = cursor.fetchall()
+        result += f"Number of CME futures not listed as options: {cursor.fetchone()[0]}\n"
 
-        for row in query_results:
-            result += f"Holiday Id = {row[0]}\n"
-            result += f"Holiday Name = {row[1]}\n"
-            result += f"Is Early Close = {row[2]}\n"
-            result += f"Holiday Date = {row[3]}\n"
-            result += f"Calendar Year = {row[4]}\n"
-            result += "\n"
-    elif numQuery == 7:
+    elif numQuery == 2:
         query = """
-                SELECT h.HolidayName
-                FROM ExchangeInfo.Holidays AS h
-                JOIN Is_Observed_By AS o ON h.HolidayId = o.HolidayId
-                JOIN Exchanges AS e ON e.ExchangeId = o.ExchangeId
-                WHERE e.ExchangeName = 'CBOE'
-                AND h.HolidayName NOT IN
-                    (
-                    SELECT h.HolidayName, h.HolidayDate
-                    FROM ExchangeInfo.Holidays AS h
-                    JOIN Is_Observed_By AS o ON h.HolidayId = o.HolidayId
-                    JOIN Exchanges AS e ON e.ExchangeId = o.ExchangeId
-                    WHERE e.ExchangeName = 'CME'
-                    );
-                """
+            SELECT DISTINCT e.ExchangeName
+            FROM Product p
+            JOIN Exchange e ON p.ExchangeId = e.ExchangeId
+            WHERE p.Symbol = 'AAPL'
+              AND NOT EXISTS (
+                  SELECT 1
+                  FROM Product p2
+                  WHERE p2.Symbol = 'ZBRA'
+                    AND p2.ExchangeId = e.ExchangeId
+              );
+        """
         cursor.execute(query)
         query_results = cursor.fetchall()
-
         for row in query_results:
-            result += f"Holiday Name = {row[0]}\n"
-            result += "\n"
-    elif numQuery == 8:
+            result += f"Exchange = {row[0]}\n"
+
+    elif numQuery == 3:
         query = """
-                SELECT e.ExchangeName, COUNT(o.HolidayId) AS HolidayCount
-                FROM ExchangeInfo.Exchanges AS e
-                JOIN ExchangeInfo.Is_Observed_By AS o
-                    ON e.ExchangeId = o.ExchangeId
-                JOIN ExchangeInfo.Holiday AS h
-                    ON o.HolidayId = h.HolidayId
-                WHERE h.Holiday_Date >= '2025-06-01'
-                AND h.Holiday_Date < '2025-09-01'
-                AND h.IsEarlyClose = True
-                GROUP BY e.ExchangeName;
-                """
+            SELECT p.Contract_Type, COUNT(DISTINCT p.Symbol) AS UniqueSymbolCount
+            FROM Product p
+            JOIN Exchange e ON p.ExchangeId = e.ExchangeId
+            WHERE e.ExchangeName = 'CME'
+            GROUP BY p.Contract_Type;
+        """
         cursor.execute(query)
         query_results = cursor.fetchall()
+        for row in query_results:
+            result += f"Contract Type = {row[0]}\n"
+            result += f"Unique Symbols = {row[1]}\n\n"
 
+    elif numQuery == 4:
+        query = """
+            SELECT ExchangeName
+            FROM Exchange
+            WHERE Address LIKE '%Chicago%'
+               OR Address LIKE '%New York%';
+        """
+        cursor.execute(query)
+        query_results = cursor.fetchall()
         for row in query_results:
             result += f"Exchange Name = {row[0]}\n"
-            result += f"Holiday Count = {row[1]}\n"
-            result += "\n"
+
+    elif numQuery == 5:
+        query = """
+            SELECT COUNT(*) AS num_single_exchange_products
+            FROM (
+                SELECT Symbol
+                FROM Product
+                GROUP BY Symbol
+                HAVING COUNT(*) = 1
+            ) AS single_listings;
+        """
+        cursor.execute(query)
+        result += f"Number of products listed on only one exchange: {cursor.fetchone()[0]}\n"
+
+    elif numQuery == 6:
+        query = """
+            SELECT 
+                e.ExchangeName,
+                r.Regulator_Name,
+                p.Symbol AS Listed_Symbol
+            FROM 
+                Product p
+            JOIN Exchange e ON p.ExchangeId = e.ExchangeId
+            JOIN Is_Supervised_By isb ON e.ExchangeId = isb.ExchangeId
+            JOIN Regulators r ON isb.Regulator_ID = r.Regulator_ID
+            WHERE 
+                r.Regulator_ID = 1
+                AND p.Symbol = 'TRIP';
+        """
+        cursor.execute(query)
+        query_results = cursor.fetchall()
+        for row in query_results:
+            result += f"Exchange = {row[0]}\n"
+            result += f"Regulator = {row[1]}\n"
+            result += f"Symbol = {row[2]}\n\n"
+
+    elif numQuery == 7:
+        query = """
+            SELECT e.ExchangeName, COUNT(o.HolidayId) AS HolidayCount
+            FROM ExchangeInfo.Exchange AS e
+            JOIN ExchangeInfo.Is_Observed_By AS o ON e.ExchangeId = o.ExchangeId
+            JOIN ExchangeInfo.Holidays AS h ON o.HolidayId = h.HolidayId
+            WHERE h.HolidayDate >= '2025-06-01'
+              AND h.HolidayDate < '2025-09-01'
+              AND h.IsEarlyClose = True
+            GROUP BY e.ExchangeName;
+        """
+        cursor.execute(query)
+        query_results = cursor.fetchall()
+        for row in query_results:
+            result += f"Exchange Name = {row[0]}\n"
+            result += f"Early Close Holidays (June–August 2025) = {row[1]}\n\n"
+
+    elif numQuery == 8:
+        query = """
+            SELECT h.HolidayName, h.HolidayDate
+                FROM ExchangeInfo.Holidays AS h
+                JOIN ExchangeInfo.Is_Observed_By AS o ON h.HolidayId = o.HolidayId
+                JOIN ExchangeInfo.Exchange AS e ON e.ExchangeId = o.ExchangeId
+                WHERE e.ExchangeName = 'CBOE'
+                AND NOT EXISTS (
+                    SELECT 1
+                    FROM ExchangeInfo.Holidays AS h2
+                    JOIN ExchangeInfo.Is_Observed_By AS o2 ON h2.HolidayId = o2.HolidayId
+                    JOIN ExchangeInfo.Exchange AS e2 ON e2.ExchangeId = o2.ExchangeId
+                    WHERE e2.ExchangeName = 'CME'
+                    AND h2.HolidayName = h.HolidayName
+                    AND h2.HolidayDate = h.HolidayDate
+                );
+        """
+        cursor.execute(query)
+        query_results = cursor.fetchall()
+        for row in query_results:
+            result += f"Holiday Name = {row[0]}\n"
+            result += f"Holiday Date = {row[1]}\n\n"
+
     else:
-        result = "Incorrect entry. Please enter a number 1-10 to display query results."
+        result = "Incorrect entry. Please enter a number 1-8 to display query results."
 
     # Close MySQL Connection
     close_connection(cursor, myConnection)
     return result
 
+
+
 def insert_exchange(input: str) -> str:
     """
-    This method performs an INSERT operation to the ExchangeInfo.Exchange table
-
-    Parameters:
-        name:
-        address:
-        time_zone:
-        has_trading_floor:
+    This method performs an INSERT operation to the ExchangeInfo.Exchange table.
+    Expected input format:
+        ExchangeName, Address, TimeZone, HasPhysicalTradingFloor, TradingHours
     """
-    name, address, time_zone, has_trading_floor = input.split(',').strip()
-    values = (name, address, time_zone, has_trading_floor)
+    myConnection = None
+    cursor = None
 
     try:
-        myConnection, cursor = create_connection('root', 'cmo5', 'localhost', 'ExchangeInfo')
+        # Expecting 5 values now
+        name, address, time_zone, has_trading_floor, trading_hours = [s.strip() for s in input.split(',')]
+        values = (name, address, time_zone, has_trading_floor, trading_hours)
+
+        myConnection, cursor = create_connection('root', '$A!nts2497', 'localhost', 'ExchangeInfo')
         insert_exchange_query = """
-                                INSERT INTO ExchangeInfo.Exchange(ExchangeName, Address, TimeZone, HasFloor)
-                                    VALUES (%s, %s, %s, %s);
-                                """
+            INSERT INTO ExchangeInfo.Exchange(ExchangeName, Address, TimeZone, HasPhysicalTradingFloor, TradingHours)
+            VALUES (%s, %s, %s, %s, %s);
+        """
         cursor.execute(insert_exchange_query, values)
         myConnection.commit()
-        output = f"Succesfully inserted exchange {name}!"
+        output = f"Successfully inserted exchange {name}!"
     except Exception as exc:
         output = f"Error inserting Exchange {name}"
-        raise Exception("Error inserting Exchange")
+        raise Exception(output)
     finally:
-        close_connection(cursor, myConnection)
-    
+        if cursor and myConnection:
+            close_connection(cursor, myConnection)
+
     return output
+
+
 
 def insert_asset_class(name: str) -> str:
     """
@@ -153,7 +236,7 @@ def insert_asset_class(name: str) -> str:
         name:
     """
     try:
-        myConnection, cursor = create_connection('root', 'cmo5', 'localhost', 'ExchangeInfo')   
+        myConnection, cursor = create_connection('root', '$A!nts2497', 'localhost', 'ExchangeInfo')   
         values = (name,)
         insert_asset_class_query = """
                                 INSERT INTO ExchangeInfo.AssetClass(AssetClassName)
@@ -177,17 +260,16 @@ if __name__ == "__main__":
 
     query_list_text = (
         "Query List\n\n"
-        "1. Display the number of symbols listed on CME exchange that are a future but not an option.\n"
-        "2. Display all exchanges that have AAPL listed but don’t have ZBRA listed.\n"
-        "3. Display unique symbols for each contract type that trade at the CME\n"
-        "4. Display all exchanges that are subject to SEC regulations and have TRIP listed\n"
-        "5. Display all exchange names located in either Chicago and New York\n"
-        "6. How many products are only listed on one exchange?\n"
-        "7. Display HolidayName for any holidays that observed by the CME exchange but not by the CBOE exchange.\n"
-        "8. Count the number of holidays per exchange with early close between June and September.\n"
-        "9. Which Broker-Dealers are not members of NYSE?\n"
-        "10. What non-weekend off days do Broker-Dealers have?"   
+        "1. Count the number of symbols listed on the CME that are futures but not options.\n"
+        "2. Display all exchanges that have AAPL listed but do not have ZBRA listed.\n"
+        "3. Display the number of unique symbols for each contract type that trade at the CME.\n"
+        "4. Display all exchanges located in either Chicago or New York.\n"
+        "5. Count how many products are listed on only one exchange.\n"
+        "6. Display all exchanges supervised by the SEC that have TRIP listed.\n"
+        "7. Count the number of early close holidays per exchange between June and September 2025.\n"
+        "8. Display holidays (name and date) observed by CBOE but not by CME.\n"
     )
+
 
     # Top Frame - Query Selection
     top_frame = tk.Frame(root, padx=10, pady=10)
@@ -218,7 +300,7 @@ if __name__ == "__main__":
     insert_button = tk.Button(bottom_frame, text="Submit", command=lambda: result_label.config(text=insert_asset_class(asset_class_text_box.get())))
     insert_button.grid(row=0, column=2, padx=5, pady=5)
     # Insert Exchange
-    exchange_label = tk.Label(bottom_frame, text="Insert new Exchange (ExchangeName,Address,TimeZone,HasPhysicalTradingFloor):", justify="left", font=("Arial", 10, "bold"))
+    exchange_label = tk.Label(bottom_frame, text="Insert new Exchange (ExchangeName,Address,TimeZone,HasPhysicalTradingFloor,TradingHours):", justify="left", font=("Arial", 10, "bold"))
     exchange_label.grid(row=1, column=0, sticky="e", padx=5, pady=5)
     exchange_text_box = tk.Entry(bottom_frame)
     exchange_text_box.grid(row=1, column=1, sticky="w", padx=5, pady=5)

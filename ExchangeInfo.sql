@@ -4,7 +4,7 @@ USE ExchangeInfo;
 
 -- Table: Exchange
 CREATE TABLE Exchange (
-    ExchangeId INT AUTO_INCREMENT PRIMARY KEY
+    ExchangeId INT AUTO_INCREMENT PRIMARY KEY,
     ExchangeName VARCHAR(255),
     Address VARCHAR(255),
     TradingHours VARCHAR(255),
@@ -63,20 +63,7 @@ CREATE TABLE Is_Observed_By (
 -- Insert Data into Is_Observed_By
 INSERT INTO Is_Observed_By(HolidayId, ExchangeId)
 VALUES
-	(1, 0),  -- NYSE
-	(3, 0),
-	(4, 0),
-	(5, 0),
-	(6, 0),
-	(7, 0),
-	(8, 0),
-	(9, 0),
-	(10, 0),
-	(11, 0),
-	(12, 0),
-	(13, 0),
-	(14, 0),
-	(1, 1),  -- NASDAQ
+	(1, 1),  -- NYSE
 	(3, 1),
 	(4, 1),
 	(5, 1),
@@ -89,8 +76,7 @@ VALUES
 	(12, 1),
 	(13, 1),
 	(14, 1),
-	(1, 2),  -- CBOE BZX
-	(2, 2),
+	(1, 2),  -- NASDAQ
 	(3, 2),
 	(4, 2),
 	(5, 2),
@@ -103,7 +89,7 @@ VALUES
 	(12, 2),
 	(13, 2),
 	(14, 2),
-	(1, 3),  -- CBOE BYX
+	(1, 3),  -- CBOE BZX
 	(2, 3),
 	(3, 3),
 	(4, 3),
@@ -117,7 +103,7 @@ VALUES
 	(12, 3),
 	(13, 3),
 	(14, 3),
-	(1, 4),  -- CBOE EDGA
+	(1, 4),  -- CBOE BYX
 	(2, 4),
 	(3, 4),
 	(4, 4),
@@ -131,7 +117,7 @@ VALUES
 	(12, 4),
 	(13, 4),
 	(14, 4),
-	(1, 5),  -- CBOE EDGX
+	(1, 5),  -- CBOE EDGA
 	(2, 5),
 	(3, 5),
 	(4, 5),
@@ -145,7 +131,7 @@ VALUES
 	(12, 5),
 	(13, 5),
 	(14, 5),
-	(1, 6),  -- CBOE C2
+	(1, 6),  -- CBOE EDGX
 	(2, 6),
 	(3, 6),
 	(4, 6),
@@ -159,7 +145,7 @@ VALUES
 	(12, 6),
 	(13, 6),
 	(14, 6),
-	(1, 7),  -- CBOE
+	(1, 7),  -- CBOE C2
 	(2, 7),
 	(3, 7),
 	(4, 7),
@@ -173,7 +159,8 @@ VALUES
 	(12, 7),
 	(13, 7),
 	(14, 7),
-	(1, 8),  -- IEX
+	(1, 8),  -- CBOE
+	(2, 8),
 	(3, 8),
 	(4, 8),
 	(5, 8),
@@ -186,7 +173,7 @@ VALUES
 	(12, 8),
 	(13, 8),
 	(14, 8),
-	(1, 9),  -- MIAX
+	(1, 9),  -- IEX
 	(3, 9),
 	(4, 9),
 	(5, 9),
@@ -199,7 +186,7 @@ VALUES
 	(12, 9),
 	(13, 9),
 	(14, 9),
-	(1, 10),  -- CME
+	(1, 10),  -- MIAX
 	(3, 10),
 	(4, 10),
 	(5, 10),
@@ -211,7 +198,20 @@ VALUES
 	(11, 10),
 	(12, 10),
 	(13, 10),
-	(14, 10);
+	(14, 10),
+	(1, 11),  -- CME
+	(3, 11),
+	(4, 11),
+	(5, 11),
+	(6, 11),
+	(7, 11),
+	(8, 11),
+	(9, 11),
+	(10, 11),
+	(11, 11),
+	(12, 11),
+	(13, 11),
+	(14, 11);
 
 -- Table: Regulators
 CREATE TABLE ExchangeInfo.Regulators (
@@ -233,46 +233,41 @@ INSERT INTO ExchangeInfo.Regulators VALUES
 
 -- Table: Is_Supervised_By with COMPOSITE PRIMARY KEY
 CREATE TABLE ExchangeInfo.Is_Supervised_By (
-    Exchange_ID INT,
+    ExchangeID INT,
     Regulator_ID INT,
-    PRIMARY KEY (Exchange_ID, Regulator_ID),
-    FOREIGN KEY (Exchange_ID) REFERENCES Exchanges(Exchange_ID),
+    PRIMARY KEY (ExchangeID, Regulator_ID),
+    FOREIGN KEY (ExchangeID) REFERENCES Exchange(ExchangeID),
     FOREIGN KEY (Regulator_ID) REFERENCES Regulators(Regulator_ID)
 );
 
 -- Insert relationships
 INSERT INTO ExchangeInfo.Is_Supervised_By VALUES
-(0, 1),  -- NYSE - SEC
-(0, 3),  -- NYSE - FINRA
-(1, 1),  -- NASDAQ - SEC
-(1, 3),  -- NASDAQ - FINRA
-(2, 1),  -- CBOE - SEC
-(2, 2),  -- CBOE - CFTC
-(2, 3),  -- CBOE - FINRA
-(3, 1),  -- CBOE BZX - SEC
-(3, 3),  -- CBOE BZX - FINRA
-(4, 1),  -- CBOE BYX - SEC
-(4, 3),  -- CBOE BYX - FINRA
-(5, 1),  -- CBOE EDGA - SEC
-(5, 3),  -- CBOE EDGA - FINRA
-(6, 1),  -- CBOE EDGX - SEC
-(6, 3),  -- CBOE EDGX - FINRA
-(7, 1),  -- CBOE C2 - SEC
-(7, 3),  -- CBOE C2 - FINRA
-(8, 1),  -- IEX - SEC
-(8, 3),  -- IEX - FINRA
-(9, 1),  -- MIAX - SEC
-(9, 3),  -- MIAX - FINRA
-(10, 2), -- CME - CFTC
-(10, 4); -- CME - NFA
+(1, 1),  -- NYSE - SEC
+(1, 3),  -- NYSE - FINRA
+(2, 1),  -- NASDAQ - SEC
+(2, 3),  -- NASDAQ - FINRA
+(3, 1),  -- CBOE - SEC
+(3, 2),  -- CBOE - CFTC
+(3, 3),  -- CBOE - FINRA
+(4, 1),  -- CBOE BZX - SEC
+(4, 3),  -- CBOE BZX - FINRA
+(5, 1),  -- CBOE BYX - SEC
+(5, 3),  -- CBOE BYX - FINRA
+(6, 1),  -- CBOE EDGA - SEC
+(6, 3),  -- CBOE EDGA - FINRA
+(7, 1),  -- CBOE EDGX - SEC
+(7, 3),  -- CBOE EDGX - FINRA
+(8, 1),  -- CBOE C2 - SEC
+(8, 3),  -- CBOE C2 - FINRA
+(9, 1),  -- IEX - SEC
+(9, 3),  -- IEX - FINRA
+(10, 1),  -- MIAX - SEC
+(10, 3),  -- MIAX - FINRA
+(11, 2), -- CME - CFTC
+(11, 4); -- CME - NFA
 
 
 SELECT * FROM Product
-WHERE Contract_Type = "Future"
-LIMIT 10
-
-SELECT * FROM Product
-WHERE Contract_Type = "Option"
 LIMIT 10
 
 
@@ -284,3 +279,20 @@ LIMIT 10
 
 SELECT * FROM AssetClass
 LIMIT 10
+
+SELECT * FROM Exchange
+LIMIT 10
+
+SELECT * FROM Holidays
+LIMIT 10
+
+SELECT * FROM Is_Observed_By
+LIMIT 10
+
+SELECT * FROM Regulators
+LIMIT 10
+
+SELECT * FROM Is_Supervised_By
+LIMIT 10
+
+SELECT ExchangeId, ExchangeName FROM ExchangeInfo.Exchange;
