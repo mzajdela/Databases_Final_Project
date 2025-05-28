@@ -4,7 +4,7 @@ USE ExchangeInfo;
 
 -- Table: Exchange
 CREATE TABLE Exchange (
-    ExchangeId INT AUTO_INCREMENT PRIMARY KEY
+    ExchangeId INT AUTO_INCREMENT PRIMARY KEY,
     ExchangeName VARCHAR(255),
     Address VARCHAR(255),
     TradingHours VARCHAR(255),
