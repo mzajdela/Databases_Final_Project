@@ -266,6 +266,25 @@ INSERT INTO ExchangeInfo.Is_Supervised_By VALUES
 (10, 2), -- CME - CFTC
 (10, 4); -- CME - NFA
 
+CREATE TABLE Broker_Dealer(
+	CIK		INTEGER		NOT NULL,
+    	CompanyName	VARCHAR(50)	DEFAULT 'unknown name',
+    	CompanyAddress	VARCHAR(50)	DEFAULT 'unknown location',
+    	CHECK (CIK >= 0),
+    	PRIMARY KEY(CIK)
+);
+
+CREATE TABLE Is_A_Member_Of(
+	CIK		INTEGER		NOT NULL,
+    	ExchangeId	INTEGER		NOT NULL,
+	FOREIGN KEY(CIK) 
+		REFERENCES Broker_Dealer(CIK)
+		ON DELETE CASCADE,
+    	FOREIGN KEY(ExchangeId) 
+		REFERENCES Exchange(ExchangeId)
+        	ON DELETE CASCADE
+);
+
 
 SELECT * FROM Product
 WHERE Contract_Type = "Future"
