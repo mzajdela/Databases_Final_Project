@@ -266,6 +266,38 @@ INSERT INTO ExchangeInfo.Is_Supervised_By VALUES
 (11, 2), -- CME - CFTC
 (11, 4); -- CME - NFA
 
+CREATE TABLE Broker_Dealer(
+	CIK		INTEGER		NOT NULL,
+    	CompanyName	VARCHAR(80)	DEFAULT 'unknown name',
+    	CompanyAddress	VARCHAR(100)	DEFAULT 'unknown location',
+    	CHECK (CIK >= 0),
+    	PRIMARY KEY(CIK)
+);
+
+CREATE TABLE Is_A_Member_Of(
+	CIK			INTEGER		NOT NULL,
+	ExchangeId	INTEGER		NOT NULL,
+    Is_DPM 		BOOL		DEFAULT 0,
+	FOREIGN KEY(CIK) 
+		REFERENCES Broker_Dealer(CIK)
+		ON DELETE CASCADE,
+    	FOREIGN KEY(ExchangeId) 
+		REFERENCES Exchange(ExchangeId)
+        	ON DELETE CASCADE
+);
+
+CREATE TABLE Trades(
+	CIK				INTEGER		NOT NULL,
+	Product_Symbol	VARCHAR(20) NOT NULL,
+    Asset_Class_Id 	INTEGER		NOT NULL,
+    ExchangeId		INTEGER		NOT NULL,
+	FOREIGN KEY(CIK) 
+		REFERENCES Broker_Dealer(CIK)
+		ON DELETE CASCADE,
+	FOREIGN KEY(Product_Symbol, Asset_Class_Id, ExchangeId) 
+		REFERENCES Product(Symbol, Asset_Class_Id, ExchangeId)
+        	ON DELETE CASCADE
+);
 
 SELECT * FROM Product
 WHERE Contract_Type = "Future"
@@ -286,9 +318,9 @@ SELECT * FROM AssetClass
 LIMIT 10;
 
 SELECT * FROM Exchange
-LIMIT 10
+LIMIT 15
 
-SELECT * FROM Holidays
+SELECT * FROM Trades
 LIMIT 10
 
 SELECT * FROM Is_Observed_By
@@ -300,4 +332,8 @@ LIMIT 10
 SELECT * FROM Is_Supervised_By
 LIMIT 10
 
-SELECT ExchangeId, ExchangeName FROM ExchangeInfo.Exchange;
+SELECT COUNT(*) AS NumRows
+FROM Product;
+
+SELECT COUNT(*) AS NumRows
+FROM Trades;
