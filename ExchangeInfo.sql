@@ -268,8 +268,8 @@ INSERT INTO ExchangeInfo.Is_Supervised_By VALUES
 
 CREATE TABLE Broker_Dealer(
 	CIK		INTEGER		NOT NULL,
-    	CompanyName	VARCHAR(50)	DEFAULT 'unknown name',
-    	CompanyAddress	VARCHAR(50)	DEFAULT 'unknown location',
+    	CompanyName	VARCHAR(80)	DEFAULT 'unknown name',
+    	CompanyAddress	VARCHAR(100)	DEFAULT 'unknown location',
     	CHECK (CIK >= 0),
     	PRIMARY KEY(CIK)
 );
