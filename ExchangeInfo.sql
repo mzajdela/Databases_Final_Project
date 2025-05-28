@@ -289,8 +289,8 @@ CREATE TABLE Is_A_Member_Of(
 CREATE TABLE Trades(
 	CIK		INTEGER		NOT NULL,
 	Product_Symbol	VARCHAR(20) 	NOT NULL,
-    	Asset_Class_Id 	INT		NOT NULL,
-    	ExchangeId	INT		NOT NULL,
+    	Asset_Class_Id 	INTEGER		NOT NULL,
+    	ExchangeId	INTEGER		NOT NULL,
 	FOREIGN KEY(CIK) 
 		REFERENCES Broker_Dealer(CIK)
 		ON DELETE CASCADE,
