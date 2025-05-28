@@ -218,6 +218,19 @@ def insert_asset_class(name: str) -> str:
 if __name__ == "__main__":
     root = tk.Tk()
     root.title("Exchange Database Explorer")
+        # Welcome Message
+    welcome_label = tk.Label(
+        root,
+        text="Welcome to our Exchange Database Explorer!\n"
+             "Use this tool to run predefined SQL queries against the ExchangeInfo database\n"
+             "and add asset classes and exchange metadata via the interface below.",
+        font=("Arial", 10, "italic"),
+        justify="left",
+        padx=10,
+        pady=5,
+        anchor="w"
+    )
+    welcome_label.pack(fill=tk.X)
 
     query_list_text = (
         "Query List\n\n"
