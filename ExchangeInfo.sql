@@ -236,7 +236,7 @@ CREATE TABLE ExchangeInfo.Is_Supervised_By (
     Exchange_ID INT,
     Regulator_ID INT,
     PRIMARY KEY (Exchange_ID, Regulator_ID),
-    FOREIGN KEY (Exchange_ID) REFERENCES Exchanges(Exchange_ID),
+    FOREIGN KEY (Exchange_ID) REFERENCES Exchange(Exchange_ID),
     FOREIGN KEY (Regulator_ID) REFERENCES Regulators(Regulator_ID)
 );
 
