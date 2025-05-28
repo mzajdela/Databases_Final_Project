@@ -145,6 +145,48 @@ bd['Address'] = bd.Address.str.replace('  ', ' ')
 bd = bd[['CIK', 'Name', 'Address']]
 bd = bd.fillna('unknown location')
 
+#DPM CIKs
+nyse_dpm = [1452765, 1457716, 811229, 1146184, 895502, 1431146, 1103083, 890203, 927337, 1466697, 887740, 1467283, 1261467, 1510683]
+cboe_dpm = [1146184, 1300257, 811229, 927337, 932540, 68136, 1315511, 1408672, 1257251]
+cboe_edgx_dpm = [1146184, 1300257, 811229, 927337, 932540, 68136, 1315511, 1408672, 1257251,1488542, 1475597]
+cme_dpm = [1529090, 1300257, 91154, 1146220, 1053725, 1068940, 1115193, 1431146, 1257251]
+nasdaq_dpm = [1452765, 1457716, 811229, 1146184, 895502, 1431146, 1103083, 890203, 927337, 1466697, 887740, 1467283, 1261467, 1510683, 1127998]
+miax_dpm = [1529090, 1300257, 1719050, 1115193, 1127998,1431146,  1257251, 811229,  1450144, 927337 ]
+
+#DPM dataframe
+nyse_dpm = pd.DataFrame(nyse_dpm, columns = ['DPM'])
+nyse_dpm['Exchange'] = 1
+cboe_dpm = pd.DataFrame(cboe_dpm, columns = ['DPM'])
+cboe_dpm['Exchange'] = 3
+cboe_edgx_dpm = pd.DataFrame(cboe_edgx_dpm, columns = ['DPM'])
+cboe_edgx_dpm['Exchange'] = 7
+cme_dpm = pd.DataFrame(cme_dpm, columns = ['DPM'])
+cme_dpm['Exchange'] = 11
+nasdaq_dpm = pd.DataFrame(nasdaq_dpm, columns = ['DPM'])
+nasdaq_dpm['Exchange'] = 2
+miax_dpm = pd.DataFrame(miax_dpm, columns = ['DPM'])
+miax_dpm['Exchange'] = 10
+iex_dpm = pd.DataFrame(miax_dpm, columns = ['DPM'])
+iex_dpm['Exchange'] = 9
+cboe_edga_dpm = pd.DataFrame(cboe_edgx_dpm, columns = ['DPM'])
+cboe_edga_dpm['Exchange'] = 6
+cboe_bzx_dpm = pd.DataFrame(cboe_dpm, columns = ['DPM'])
+cboe_bzx_dpm['Exchange'] = 4
+cboe_byx_dpm = pd.DataFrame(cboe_dpm, columns = ['DPM'])
+cboe_byx_dpm['Exchange'] = 5
+cboe_c2_dpm = pd.DataFrame(cboe_dpm, columns = ['DPM'])
+cboe_c2_dpm['Exchange'] = 8
+
+dpm = [nyse_dpm[['DPM', 'Exchange']], nasdaq_dpm[['DPM', 'Exchange']], cboe_dpm[['DPM', 'Exchange']], cme_dpm[['DPM', 'Exchange']], iex_dpm[['DPM', 'Exchange']], miax_dpm[['DPM', 'Exchange']], cboe_bzx_dpm[['DPM', 'Exchange']],cboe_byx_dpm[['DPM', 'Exchange']],cboe_edga_dpm[['DPM', 'Exchange']],cboe_edgx_dpm[['DPM', 'Exchange']],cboe_c2_dpm[['DPM', 'Exchange']]]
+dpm = pd.concat(dpm)
+dpm = dpm.reset_index(drop = True)
+
+#add the is_dpm column
+dpm['lookup'] = dpm.DPM.astype(str) + ' ' + dpm.Exchange.astype(str)
+Is_A_Member_Of['lookup'] = Is_A_Member_Of.CIK.astype(str) + ' ' + Is_A_Member_Of.Exchange.astype(str)
+Is_A_Member_Of['is_dpm'] = Is_A_Member_Of['lookup'].isin(dpm['lookup'])
+Is_A_Member_Of = Is_A_Member_Of.drop('lookup', axis = 1)
+
 #insert into sql
 myConnection = mysql.connector.connect( 
     user='root',
@@ -161,9 +203,9 @@ for i, row in bd.iterrows():
 myConnection.commit()
 
 #insert member data
-query = "insert into Is_A_Member_Of values (%s, %s);"
+query = "insert into Is_A_Member_Of values (%s, %s, %s);"
 for i, row in Is_A_Member_Of.iterrows():
-    values = (int(row[0]), int(row[1]))
+    values = (int(row[0]), int(row[1]), int(row[2]))
     cursorObject.execute(query, values)
 myConnection.commit()
 
