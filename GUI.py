@@ -120,19 +120,16 @@ def insert_exchange(input: str) -> str:
     This method performs an INSERT operation to the ExchangeInfo.Exchange table
 
     Parameters:
-        name:
-        address:
-        time_zone:
-        has_trading_floor:
+        input: (str) Comma separated input that contains Exchange Info
     """
-    name, address, time_zone, has_trading_floor = input.split(',').strip()
-    values = (name, address, time_zone, has_trading_floor)
+    name, address, trading_hours, time_zone, has_trading_floor = input.split(',').strip()
+    values = (name, address, trading_hours, time_zone, has_trading_floor)
 
     try:
         myConnection, cursor = create_connection('root', 'cmo5', 'localhost', 'ExchangeInfo')
         insert_exchange_query = """
-                                INSERT INTO ExchangeInfo.Exchange(ExchangeName, Address, TimeZone, HasFloor)
-                                    VALUES (%s, %s, %s, %s);
+                                INSERT INTO ExchangeInfo.Exchange(ExchangeName, Address, TradingHours, TimeZone, HasPhysicalTradingFloor)
+                                    VALUES (%s, %s, %s, %s, %s);
                                 """
         cursor.execute(insert_exchange_query, values)
         myConnection.commit()
