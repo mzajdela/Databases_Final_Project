@@ -322,7 +322,7 @@ final_df = final_df[['Symbol', 'Asset_Class_Id', 'ExchangeId']].merge(dpm[['CIK'
 #insert into sql
 myConnection = mysql.connector.connect( 
     user='root',
-    password = 'orm1Fndersine',
+    password = '$A!nts2497',
     host = 'localhost',
     database = 'ExchangeInfo')
 cursorObject = myConnection.cursor()

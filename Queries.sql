@@ -84,3 +84,34 @@ AND h.HolidayName NOT IN
 	JOIN Exchanges AS e ON e.ExchangeId = o.ExchangeId
 	WHERE e.ExchangeName = 'CME'
 	);
+
+
+-- Which non DPM Broker Dealers are members of NYSE but not NASDAQ
+SELECT b.CIK, CompanyName
+FROM Broker_Dealer as b
+INNER JOIN Is_A_Member_Of as m
+	on b.CIK = m.CIK
+WHERE Is_DPM = 0
+	AND ExchangeId = 1
+	AND	b.CIK NOT IN (
+		SELECT b.CIK
+		FROM Broker_Dealer as b
+		INNER JOIN Is_A_Member_Of as m
+			on b.CIK = m.CIK
+		WHERE Is_DPM = 0
+			AND ExchangeId = 2
+);
+
+-- Find DPMs who only have 10 Full Holidays (not early close) they Celebrate
+SELECT  b.CompanyName, b.CompanyAddress, COUNT(DISTINCT h.HolidayId) as Num_Full_Holidays
+FROM Is_A_Member_Of as m
+INNER JOIN Broker_Dealer as b
+	on m.CIK = b.CIK
+INNER JOIN Is_Observed_By as o
+	on m.ExchangeId = o.ExchangeId
+INNER JOIN Holidays as h
+	on o.HolidayId = h.HolidayId
+WHERE h.IsEarlyClose = False
+	AND m.Is_DPM = 1
+GROUP BY b.CompanyName, b.CompanyAddress
+HAVING Num_Full_Holidays = 10;

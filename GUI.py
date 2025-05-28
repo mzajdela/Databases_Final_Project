@@ -2,52 +2,21 @@ import mysql.connector
 import tkinter as tk
 
 def create_connection(user: str, password: str, host='localhost', database=""):
-    """
-    Creates connector object with MySql and creates curser object
-
-    Parameters:
-        user: (str) MySql username
-        password: (str) MySql password
-        host: (str) MySql host, defaulted to localhost
-        database: (str) The database you are trying to connect to. Optional parameter
-
-    Returns:
-        Connector object and Curser object
-    """
-    if database:
-        myConnection = mysql.connector.connect(user=user, password=password, host=host, database=database)
-    else:
-        myConnection = mysql.connector.connect(user=user, password=password, host=host)
+    myConnection = mysql.connector.connect(user=user, password=password, host=host, database=database)
     cursor = myConnection.cursor()
-
     return myConnection, cursor
 
 def close_connection(cursor, myConnection) -> None:
-    """
-    Closes MySql connection and curser connection.
-
-    Parameters:
-        cursor: cursor object
-        myConnection: MySql connection object
-
-    Returns:
-        None
-    """
     cursor.close()
     myConnection.close()
 
 def run_query(numQuery: str) -> str:
-    """
-    This method runs the selected query and returns the results in the GUI.
-
-    Parameters:
-        numQuery: str passed in from Query text box
-
-    Returns: (str) Query Results
-    """
-    # Create MySQL Connection
     myConnection, cursor = create_connection('root', '$A!nts2497', 'localhost', 'ExchangeInfo')
-    numQuery = int(numQuery)
+    try:
+        numQuery = int(numQuery)
+    except ValueError:
+        return "Invalid input. Please enter a number."
+
     result = ""
 
     if numQuery == 1:
@@ -96,8 +65,7 @@ def run_query(numQuery: str) -> str:
         cursor.execute(query)
         query_results = cursor.fetchall()
         for row in query_results:
-            result += f"Contract Type = {row[0]}\n"
-            result += f"Unique Symbols = {row[1]}\n\n"
+            result += f"Contract Type = {row[0]}\nUnique Symbols = {row[1]}\n\n"
 
     elif numQuery == 4:
         query = """
@@ -126,25 +94,17 @@ def run_query(numQuery: str) -> str:
 
     elif numQuery == 6:
         query = """
-            SELECT 
-                e.ExchangeName,
-                r.Regulator_Name,
-                p.Symbol AS Listed_Symbol
-            FROM 
-                Product p
+            SELECT e.ExchangeName, r.Regulator_Name, p.Symbol AS Listed_Symbol
+            FROM Product p
             JOIN Exchange e ON p.ExchangeId = e.ExchangeId
             JOIN Is_Supervised_By isb ON e.ExchangeId = isb.ExchangeId
             JOIN Regulators r ON isb.Regulator_ID = r.Regulator_ID
-            WHERE 
-                r.Regulator_ID = 1
-                AND p.Symbol = 'TRIP';
+            WHERE r.Regulator_ID = 1 AND p.Symbol = 'TRIP';
         """
         cursor.execute(query)
         query_results = cursor.fetchall()
         for row in query_results:
-            result += f"Exchange = {row[0]}\n"
-            result += f"Regulator = {row[1]}\n"
-            result += f"Symbol = {row[2]}\n\n"
+            result += f"Exchange = {row[0]}\nRegulator = {row[1]}\nSymbol = {row[2]}\n\n"
 
     elif numQuery == 7:
         query = """
@@ -152,109 +112,110 @@ def run_query(numQuery: str) -> str:
             FROM ExchangeInfo.Exchange AS e
             JOIN ExchangeInfo.Is_Observed_By AS o ON e.ExchangeId = o.ExchangeId
             JOIN ExchangeInfo.Holidays AS h ON o.HolidayId = h.HolidayId
-            WHERE h.HolidayDate >= '2025-06-01'
-              AND h.HolidayDate < '2025-09-01'
-              AND h.IsEarlyClose = True
+            WHERE h.HolidayDate >= '2025-06-01' AND h.HolidayDate < '2025-09-01' AND h.IsEarlyClose = True
             GROUP BY e.ExchangeName;
         """
         cursor.execute(query)
         query_results = cursor.fetchall()
         for row in query_results:
-            result += f"Exchange Name = {row[0]}\n"
-            result += f"Early Close Holidays (June–August 2025) = {row[1]}\n\n"
+            result += f"Exchange Name = {row[0]}\nEarly Close Holidays = {row[1]}\n\n"
 
     elif numQuery == 8:
         query = """
             SELECT h.HolidayName, h.HolidayDate
-                FROM ExchangeInfo.Holidays AS h
-                JOIN ExchangeInfo.Is_Observed_By AS o ON h.HolidayId = o.HolidayId
-                JOIN ExchangeInfo.Exchange AS e ON e.ExchangeId = o.ExchangeId
-                WHERE e.ExchangeName = 'CBOE'
-                AND NOT EXISTS (
-                    SELECT 1
-                    FROM ExchangeInfo.Holidays AS h2
-                    JOIN ExchangeInfo.Is_Observed_By AS o2 ON h2.HolidayId = o2.HolidayId
-                    JOIN ExchangeInfo.Exchange AS e2 ON e2.ExchangeId = o2.ExchangeId
-                    WHERE e2.ExchangeName = 'CME'
-                    AND h2.HolidayName = h.HolidayName
-                    AND h2.HolidayDate = h.HolidayDate
-                );
+            FROM ExchangeInfo.Holidays AS h
+            JOIN ExchangeInfo.Is_Observed_By AS o ON h.HolidayId = o.HolidayId
+            JOIN ExchangeInfo.Exchange AS e ON e.ExchangeId = o.ExchangeId
+            WHERE e.ExchangeName = 'CBOE'
+              AND NOT EXISTS (
+                  SELECT 1
+                  FROM ExchangeInfo.Holidays AS h2
+                  JOIN ExchangeInfo.Is_Observed_By AS o2 ON h2.HolidayId = o2.HolidayId
+                  JOIN ExchangeInfo.Exchange AS e2 ON e2.ExchangeId = o2.ExchangeId
+                  WHERE e2.ExchangeName = 'CME' AND h2.HolidayName = h.HolidayName AND h2.HolidayDate = h.HolidayDate
+              );
         """
         cursor.execute(query)
         query_results = cursor.fetchall()
         for row in query_results:
-            result += f"Holiday Name = {row[0]}\n"
-            result += f"Holiday Date = {row[1]}\n\n"
+            result += f"Holiday Name = {row[0]}\nHoliday Date = {row[1]}\n\n"
+
+    elif numQuery == 9:
+        query = """
+            SELECT b.CIK, CompanyName
+            FROM Broker_Dealer AS b
+            INNER JOIN Is_A_Member_Of AS m ON b.CIK = m.CIK
+            WHERE Is_DPM = 0 AND ExchangeId = 1
+              AND b.CIK NOT IN (
+                  SELECT b2.CIK
+                  FROM Broker_Dealer AS b2
+                  INNER JOIN Is_A_Member_Of AS m2 ON b2.CIK = m2.CIK
+                  WHERE Is_DPM = 0 AND ExchangeId = 2
+              );
+        """
+        cursor.execute(query)
+        query_results = cursor.fetchall()
+        for row in query_results:
+            result += f"CIK = {row[0]}\nCompany Name = {row[1]}\n\n"
+
+    elif numQuery == 10:
+        query = """
+            SELECT b.CompanyName, b.CompanyAddress, COUNT(DISTINCT h.HolidayId) AS Num_Full_Holidays
+            FROM Is_A_Member_Of AS m
+            INNER JOIN Broker_Dealer AS b ON m.CIK = b.CIK
+            INNER JOIN Is_Observed_By AS o ON m.ExchangeId = o.ExchangeId
+            INNER JOIN Holidays AS h ON o.HolidayId = h.HolidayId
+            WHERE h.IsEarlyClose = False AND m.Is_DPM = 1
+            GROUP BY b.CompanyName, b.CompanyAddress
+            HAVING Num_Full_Holidays = 10;
+        """
+        cursor.execute(query)
+        query_results = cursor.fetchall()
+        for row in query_results:
+            result += f"Company Name = {row[0]}\nCompany Address = {row[1]}\nFull Holidays Observed = {row[2]}\n\n"
 
     else:
-        result = "Incorrect entry. Please enter a number 1-8 to display query results."
+        result = "Incorrect entry. Please enter a number 1–10 to display query results."
 
-    # Close MySQL Connection
     close_connection(cursor, myConnection)
     return result
 
-
-
 def insert_exchange(input: str) -> str:
-    """
-    This method performs an INSERT operation to the ExchangeInfo.Exchange table
-
-    Parameters:
-        name:
-        address:
-        time_zone:
-        has_trading_floor:
-    """
-    name, address, time_zone, has_trading_floor = input.split(',').strip()
-    values = (name, address, time_zone, has_trading_floor)
-
     try:
-        myConnection, cursor = create_connection('root', 'cmo5', 'localhost', 'ExchangeInfo')
-        insert_exchange_query = """
-                                INSERT INTO ExchangeInfo.Exchange(ExchangeName, Address, TimeZone, HasFloor)
-                                    VALUES (%s, %s, %s, %s);
-                                """
-        cursor.execute(insert_exchange_query, values)
+        name, address, time_zone, has_trading_floor, trading_hours = [s.strip() for s in input.split(',')]
+        values = (name, address, time_zone, has_trading_floor, trading_hours)
+        myConnection, cursor = create_connection('root', '$A!nts2497', 'localhost', 'ExchangeInfo')
+        cursor.execute(
+            """
+            INSERT INTO ExchangeInfo.Exchange(ExchangeName, Address, TimeZone, HasPhysicalTradingFloor, TradingHours)
+            VALUES (%s, %s, %s, %s, %s);
+            """,
+            values
+        )
         myConnection.commit()
-        output = f"Successfully inserted exchange {name}!"
-    except Exception as exc:
-        output = f"Error inserting Exchange {name}"
-        raise Exception(output)
-    finally:
-        if cursor and myConnection:
-            close_connection(cursor, myConnection)
-
-    return output
-
-
-
-def insert_asset_class(name: str) -> str:
-    """
-    This method performs an INSERT operation to the ExchangeInfo.AssetClass table
-
-    Parameters:
-        name:
-    """
-    try:
-        myConnection, cursor = create_connection('root', '$A!nts2497', 'localhost', 'ExchangeInfo')   
-        values = (name,)
-        insert_asset_class_query = """
-                                INSERT INTO ExchangeInfo.AssetClass(AssetClassName)
-                                    VALUES (%s);
-                                """
-        cursor.execute(insert_asset_class_query, values)
-        myConnection.commit()
-        output = f"Succesfully inserted asset class {name}!"
-    except Exception as exc:
-        output = f"Error adding new AssetClass {name}"
-        raise Exception("Error adding new AssetClass")
+        return f"Successfully inserted exchange {name}!"
+    except Exception:
+        return f"Error inserting Exchange {name}"
     finally:
         close_connection(cursor, myConnection)
-    
-    return output
+
+def insert_asset_class(name: str) -> str:
+    try:
+        myConnection, cursor = create_connection('root', '$A!nts2497', 'localhost', 'ExchangeInfo')
+        cursor.execute(
+            """
+            INSERT INTO ExchangeInfo.AssetClass(AssetClassName) VALUES (%s);
+            """,
+            (name,)
+        )
+        myConnection.commit()
+        return f"Successfully inserted asset class {name}!"
+    except Exception:
+        return f"Error adding new AssetClass {name}"
+    finally:
+        close_connection(cursor, myConnection)
 
 if __name__ == "__main__":
-    # Create the main window
     root = tk.Tk()
     root.title("Exchange Database Explorer")
 
@@ -268,44 +229,54 @@ if __name__ == "__main__":
         "6. Display all exchanges supervised by the SEC that have TRIP listed.\n"
         "7. Count the number of early close holidays per exchange between June and September 2025.\n"
         "8. Display holidays (name and date) observed by CBOE but not by CME.\n"
+        "9. List non-DPM Broker Dealers who are members of NYSE but not NASDAQ.\n"
+        "10. Find DPMs who observe exactly 10 full holidays (not early close).\n"
     )
 
-
-    # Top Frame - Query Selection
     top_frame = tk.Frame(root, padx=10, pady=10)
     top_frame.pack(fill=tk.X)
-    query = tk.Label(top_frame, text=query_list_text, wraplength=400, justify="left")
-    query.grid(row=0, column=0, columnspan=2, sticky="w", pady=(0, 5))
-    instruction_label = tk.Label(top_frame, text="Enter a number to run the corresponding query:", justify="left", font=("Arial", 10, "bold"))
-    instruction_label.grid(row=1, column=0, sticky="w", pady=5)
-    query_input = tk.Entry(top_frame, width=5)
-    query_input.grid(row=1, column=1, sticky="w", padx=5, pady=5)
-    run_query_button = tk.Button(top_frame, text="Submit", command=lambda: result_label.config(text=run_query(query_input.get())))
-    run_query_button.grid(row=1, column=2, sticky="w", padx=5, pady=5)
 
-    # Middle Frame - Display Results
+    query_label = tk.Label(top_frame, text=query_list_text, anchor="w", justify="left")
+    query_label.pack(anchor="w")
+
+    input_frame = tk.Frame(top_frame)
+    input_frame.pack(anchor="w")
+
+    tk.Label(input_frame, text="Enter query number (1–10):").pack(side=tk.LEFT)
+    query_input = tk.Entry(input_frame, width=5)
+    query_input.pack(side=tk.LEFT, padx=5)
+
     middle_frame = tk.Frame(root, padx=10, pady=10)
-    middle_frame.pack(fill=tk.X)
-    result_label = tk.Label(middle_frame, text="", anchor="w", width=60, fg="green")
-    result_label.grid(row=0, column=0, sticky="w")
+    middle_frame.pack(fill=tk.BOTH, expand=True)
 
-    # Bottom Frame - Insert Statements
-    # Insert Asset Class
+    scrollbar = tk.Scrollbar(middle_frame)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    result_text = tk.Text(middle_frame, wrap=tk.WORD, yscrollcommand=scrollbar.set, height=20, width=80)
+    result_text.pack(fill=tk.BOTH, expand=True)
+    scrollbar.config(command=result_text.yview)
+
+    # NEW: Status message below the scrollable result box
+    status_label = tk.Label(root, text="", fg="blue", anchor="w", justify="left")
+    status_label.pack(fill=tk.X, padx=10)
+
+    def run_and_display():
+        result_text.delete("1.0", tk.END)
+        result_text.insert(tk.END, run_query(query_input.get()))
+
+    tk.Button(input_frame, text="Run Query", command=run_and_display).pack(side=tk.LEFT, padx=5)
+
     bottom_frame = tk.Frame(root, padx=10, pady=10)
     bottom_frame.pack(fill=tk.X)
-    asset_class_label = tk.Label(bottom_frame, text="Insert new Asset Class (AssetClassName):", justify="left", font=("Arial", 10, "bold"))
-    asset_class_label.grid(row=0, column=0, sticky="e", padx=5, pady=5)
-    asset_class_text_box = tk.Entry(bottom_frame)
-    asset_class_text_box.grid(row=0, column=1, sticky="w", padx=5, pady=5)
-    insert_button = tk.Button(bottom_frame, text="Submit", command=lambda: result_label.config(text=insert_asset_class(asset_class_text_box.get())))
-    insert_button.grid(row=0, column=2, padx=5, pady=5)
-    # Insert Exchange
-    exchange_label = tk.Label(bottom_frame, text="Insert new Exchange (ExchangeName,Address,TimeZone,HasPhysicalTradingFloor,TradingHours):", justify="left", font=("Arial", 10, "bold"))
-    exchange_label.grid(row=1, column=0, sticky="e", padx=5, pady=5)
-    exchange_text_box = tk.Entry(bottom_frame)
-    exchange_text_box.grid(row=1, column=1, sticky="w", padx=5, pady=5)
-    insert_exchange_button = tk.Button(bottom_frame, text="Submit", command=lambda: result_label.config(text=insert_exchange(exchange_text_box.get())))
-    insert_exchange_button.grid(row=1, column=2, padx=5, pady=5)
 
-    # Run the GUI loop
+    tk.Label(bottom_frame, text="Insert Asset Class (name(string):").grid(row=0, column=0, sticky="e")
+    asset_class_entry = tk.Entry(bottom_frame)
+    asset_class_entry.grid(row=0, column=1, padx=5)
+    tk.Button(bottom_frame, text="Submit", command=lambda: status_label.config(text=insert_asset_class(asset_class_entry.get()))).grid(row=0, column=2, padx=5)
+
+    tk.Label(bottom_frame, text="Insert Exchange (name(string),address(string),timezone(string),hasTradingFloor(int 0/1),hours(string, ie: 09:30a-04:00p)):").grid(row=1, column=0, sticky="e")
+    exchange_entry = tk.Entry(bottom_frame, width=60)
+    exchange_entry.grid(row=1, column=1, padx=5)
+    tk.Button(bottom_frame, text="Submit", command=lambda: status_label.config(text=insert_exchange(exchange_entry.get()))).grid(row=1, column=2, padx=5)
+
     root.mainloop()
