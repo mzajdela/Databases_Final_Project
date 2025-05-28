@@ -1,0 +1,36 @@
+ADMIS
+Advantage Futures
+Barclays Capital Inc.
+BofA Securities, Inc
+CHS Hedging LLC
+Citigroup Global Markets Inc.
+CUNNINGHAM COMMODITIES, LLC
+Daiwa Capital Markets America Inc.
+Deutsche Bank Securities Inc.
+Direct Access
+Dorman Trading LLC
+G.H. Financials
+Goldman Sachs
+Hidden Road Partners
+HSBC Securities (USA) Inc.
+Interactive Brokers
+Ironbeam Inc.
+J.P. Morgan Securities LLC
+Macquarie Futures USA LLC
+Marex
+Mizuho Securities USA LLC
+Nanhua USA LLC
+Nomura Group
+Phillip Capital
+R.J. O’Brien & Associates
+RBC
+RJO Futures
+Santander Clearing Member
+Santander Investment Securities Inc.
+Societe Generale
+StoneX Financial Inc.
+Straits Financial
+The Bank of Nova Scotia
+TradeStation
+Wedbush/efutures
+Wells Fargo Securities, LLC
