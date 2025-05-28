@@ -4,7 +4,7 @@ USE ExchangeInfo;
 
 -- Table: Exchange
 CREATE TABLE Exchange (
-    ExchangeId INT AUTO_INCREMENT PRIMARY KEY,
+    ExchangeId INT AUTO_INCREMENT PRIMARY KEY
     ExchangeName VARCHAR(255),
     Address VARCHAR(255),
     TradingHours VARCHAR(255),
@@ -235,50 +235,55 @@ INSERT INTO ExchangeInfo.Regulators VALUES
 CREATE TABLE ExchangeInfo.Is_Supervised_By (
     ExchangeID INT,
     Regulator_ID INT,
-    PRIMARY KEY (ExchangeID, Regulator_ID),
-    FOREIGN KEY (ExchangeID) REFERENCES Exchange(ExchangeID),
+    PRIMARY KEY (Exchange_ID, Regulator_ID),
+    FOREIGN KEY (Exchange_ID) REFERENCES Exchanges(Exchange_ID),
     FOREIGN KEY (Regulator_ID) REFERENCES Regulators(Regulator_ID)
 );
 
 -- Insert relationships
 INSERT INTO ExchangeInfo.Is_Supervised_By VALUES
-(1, 1),  -- NYSE - SEC
-(1, 3),  -- NYSE - FINRA
-(2, 1),  -- NASDAQ - SEC
-(2, 3),  -- NASDAQ - FINRA
-(3, 1),  -- CBOE - SEC
-(3, 2),  -- CBOE - CFTC
-(3, 3),  -- CBOE - FINRA
-(4, 1),  -- CBOE BZX - SEC
-(4, 3),  -- CBOE BZX - FINRA
-(5, 1),  -- CBOE BYX - SEC
-(5, 3),  -- CBOE BYX - FINRA
-(6, 1),  -- CBOE EDGA - SEC
-(6, 3),  -- CBOE EDGA - FINRA
-(7, 1),  -- CBOE EDGX - SEC
-(7, 3),  -- CBOE EDGX - FINRA
-(8, 1),  -- CBOE C2 - SEC
-(8, 3),  -- CBOE C2 - FINRA
-(9, 1),  -- IEX - SEC
-(9, 3),  -- IEX - FINRA
-(10, 1),  -- MIAX - SEC
-(10, 3),  -- MIAX - FINRA
-(11, 2), -- CME - CFTC
-(11, 4); -- CME - NFA
+(0, 1),  -- NYSE - SEC
+(0, 3),  -- NYSE - FINRA
+(1, 1),  -- NASDAQ - SEC
+(1, 3),  -- NASDAQ - FINRA
+(2, 1),  -- CBOE - SEC
+(2, 2),  -- CBOE - CFTC
+(2, 3),  -- CBOE - FINRA
+(3, 1),  -- CBOE BZX - SEC
+(3, 3),  -- CBOE BZX - FINRA
+(4, 1),  -- CBOE BYX - SEC
+(4, 3),  -- CBOE BYX - FINRA
+(5, 1),  -- CBOE EDGA - SEC
+(5, 3),  -- CBOE EDGA - FINRA
+(6, 1),  -- CBOE EDGX - SEC
+(6, 3),  -- CBOE EDGX - FINRA
+(7, 1),  -- CBOE C2 - SEC
+(7, 3),  -- CBOE C2 - FINRA
+(8, 1),  -- IEX - SEC
+(8, 3),  -- IEX - FINRA
+(9, 1),  -- MIAX - SEC
+(9, 3),  -- MIAX - FINRA
+(10, 2), -- CME - CFTC
+(10, 4); -- CME - NFA
 
 
 SELECT * FROM Product
+WHERE Contract_Type = "Future"
+LIMIT 10
+
+SELECT * FROM Product
+WHERE Contract_Type = "Option"
 LIMIT 10
 
 
 SELECT * FROM Product
-LIMIT 10
+LIMIT 10;
 
 SELECT * FROM Exchange
-LIMIT 10
+LIMIT 10;
 
 SELECT * FROM AssetClass
-LIMIT 10
+LIMIT 10;
 
 SELECT * FROM Exchange
 LIMIT 10

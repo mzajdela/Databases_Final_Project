@@ -197,23 +197,23 @@ def run_query(numQuery: str) -> str:
 
 def insert_exchange(input: str) -> str:
     """
-    This method performs an INSERT operation to the ExchangeInfo.Exchange table.
-    Expected input format:
-        ExchangeName, Address, TimeZone, HasPhysicalTradingFloor, TradingHours
+    This method performs an INSERT operation to the ExchangeInfo.Exchange table
+
+    Parameters:
+        name:
+        address:
+        time_zone:
+        has_trading_floor:
     """
-    myConnection = None
-    cursor = None
+    name, address, time_zone, has_trading_floor = input.split(',').strip()
+    values = (name, address, time_zone, has_trading_floor)
 
     try:
-        # Expecting 5 values now
-        name, address, time_zone, has_trading_floor, trading_hours = [s.strip() for s in input.split(',')]
-        values = (name, address, time_zone, has_trading_floor, trading_hours)
-
-        myConnection, cursor = create_connection('root', '$A!nts2497', 'localhost', 'ExchangeInfo')
+        myConnection, cursor = create_connection('root', 'cmo5', 'localhost', 'ExchangeInfo')
         insert_exchange_query = """
-            INSERT INTO ExchangeInfo.Exchange(ExchangeName, Address, TimeZone, HasPhysicalTradingFloor, TradingHours)
-            VALUES (%s, %s, %s, %s, %s);
-        """
+                                INSERT INTO ExchangeInfo.Exchange(ExchangeName, Address, TimeZone, HasFloor)
+                                    VALUES (%s, %s, %s, %s);
+                                """
         cursor.execute(insert_exchange_query, values)
         myConnection.commit()
         output = f"Successfully inserted exchange {name}!"

@@ -1,0 +1,36 @@
+ABN AMRO Clearing USA LLC
+ADM Investor Services Inc.
+Advantage Futures LLC
+Barclays Capital Inc.
+BNP Paribas Securities Corp.
+BofA Securities, Inc.
+Capital Futures Corp.
+Citigroup Global Markets Inc.
+Clear Street LLC
+Deutsche Bank Securities Inc.
+Global Execution Brokers, LP
+Goldman Sachs & Co. LLC
+Interactive Brokers LLC
+JP Morgan Securities LLC
+KGI Futures Co., Ltd.
+Lakeshore Securities LP
+Marex Capital Markets Inc.
+Mizuho Securities USA LLC
+Morgan Stanley & Co. LLC
+Nomura Securities International Inc
+Phillip Capital Inc.
+President Futures Co. Ltd.
+R.J. O'Brien & Associates, LLC
+RBC Capital Markets, LLC
+SG Americas Securities LLC
+SpiderRock EXS, LLC
+StoneX Financial Inc.
+Straits Financial, LLC
+tastytrade, Inc.
+TradeStation Securities Inc.
+UBS Securities LLC
+Wedbush Securities, Inc.
+Wells Fargo Securities, LLC
+Wolverine Execution Services, LLC
+X-Change Financial Access LLC
+Yuanta Futures Co., Ltd.

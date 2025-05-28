@@ -1,0 +1,45 @@
+Name 	Membership Type
+ABN AMRO CLEARING USA LLC 	Electronic Exchange Member
+AKUNA SECURITIES LLC 	Options Market Maker
+APEX CLEARING CORPORATION 	Electronic Exchange Member
+AXOS CLEARING LLC 	Electronic Exchange Member
+BARCLAYS CAPITAL INC. 	Electronic Exchange Member
+BELVEDERE TRADING LLC 	Options Market Maker
+BMO CAPITAL MARKETS CORP. 	Electronic Exchange Member
+BNP PARIBAS SECURITIES CORP. 	Electronic Exchange Member
+BOFA SECURITIES, INC. 	Electronic Exchange Member
+CITADEL SECURITIES LLC 	Options Market Maker, Electronic Exchange Member & Clearing
+CITIGROUP GLOBAL MARKETS INC. 	Electronic Exchange Member
+CLEAR STREET LLC 	Electronic Exchange Member & Clearing
+DASH FINANCIAL TECHNOLOGIES LLC 	Electronic Exchange Member
+DRW SECURITIES, L.L.C. 	Options Market Maker
+GLOBAL EXECUTION BROKERS, LP 	Electronic Exchange Member
+GOLDMAN SACHS & CO. LLC 	Electronic Exchange Member
+GROUP ONE TRADING LLC 	Options Market Maker & Electronic Exchange Member
+HRT FINANCIAL LP 	Options Market Maker & Electronic Exchange Member
+IMC-CHICAGO, LLC D/B/A IMC FINANCIAL MARKETS 	Options Market Maker
+INSTINET, LLC 	Electronic Exchange Member
+INTERACTIVE BROKERS LLC 	Electronic Exchange Member
+J.P. MORGAN SECURITIES LLC 	Electronic Exchange Member
+JANE STREET CAPITAL, LLC 	Options Market Maker & Electronic Exchange Member
+JANE STREET OPTIONS, LLC 	Options Market Maker & Electronic Exchange Member
+JEFFERIES LLC 	Electronic Exchange Member
+JUMP TRADING, LLC 	Options Market Maker
+MATRIX EXECUTIONS, LLC 	Electronic Exchange Member
+MORGAN STANLEY & CO. LLC 	Options Market Maker & Electronic Exchange Member
+OLD MISSION CAPITAL LLC 	Options Market Maker
+OPTIVER US LLC 	Options Market Maker
+PEAK6 CAPITAL MANAGEMENT LLC 	Electronic Exchange Member
+PERSHING LLC 	Electronic Exchange Member
+RQD* CLEARING, LLC 	Electronic Exchange Member
+SIMPLEX TRADING, LLC 	Options Market Maker & Electronic Exchange Member
+SUSQUEHANNA INVESTMENT GROUP 	Options Market Maker
+SUSQUEHANNA SECURITIES 	Options Market Maker
+TWO SIGMA SECURITIES, LLC 	Options Market Maker
+UBS SECURITIES LLC 	Electronic Exchange Member
+WALLEYE TRADING LLC 	Options Market Maker & Electronic Exchange Member
+WEDBUSH SECURITIES INC. 	Electronic Exchange Member
+WELLS FARGO SECURITIES, LLC 	Electronic Exchange Member
+WOLVERINE EXECUTION SERVICES, LLC 	Electronic Exchange Member
+WOLVERINE TRADING, LLC 	Options Market Maker
+X-CHANGE FINANCIAL ACCESS, LLC 	Electronic Exchange Member

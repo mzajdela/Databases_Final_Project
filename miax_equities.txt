@@ -1,0 +1,50 @@
+Name 	Membership Type
+ABN AMRO CLEARING CHICAGO LLC 	Equities Clearing
+ARCHIPELAGO SECURITIES LLC 	Equities Clearing
+ATM EXECUTION LLC 	Equities Order Entry
+BARCLAYS CAPITAL INC. 	Equities Order Entry & Clearing
+BNP PARIBAS SECURITIES CORP. 	Equities Order Entry & Clearing
+BOFA SECURITIES, INC. 	Equities Market Maker, Order Entry & Clearing
+CITADEL SECURITIES LLC 	Equities Market Maker, Order Entry & Clearing
+CITIGROUP GLOBAL MARKETS INC. 	Equities Order Entry & Clearing
+CLEAR STREET, LLC 	Equities Clearing
+COWEN AND COMPANY, LLC 	Equities Order Entry & Clearing
+CREDIT SUISSE SECURITIES (USA) LLC 	Equities Order Entry & Clearing
+DRW SECURITIES, L.L.C. 	Equities Order Entry
+ELECTRONIC TRANSACTION CLEARING, INC. 	Equities Clearing
+G1 EXECUTION SERVICES, LLC 	Equities Market Member
+GLOBAL EXECUTION BROKERS, LP 	Equities Order Entry
+GOLDMAN SACHS & CO. LLC 	Equities Order Entry & Clearing
+GTS SECURITIES LLC 	Equities Order Entry
+HRT FINANCIAL LP 	Equities Market Maker, Order Entry & Clearing
+IEX SERVICES LLC 	Equities Order Entry
+IMC-CHICAGO, LLC D/B/A IMC FINANCIAL MARKETS 	Equities Order Entry
+INSTINET, LLC 	Equities Order Entry & Clearing
+INTERACTIVE BROKERS LLC 	Equities Order Entry & Clearing
+J.P. MORGAN SECURITIES LLC 	Equities Market Maker, Order Entry & Clearing
+JANE STREET CAPITAL, LLC 	Equities Market Maker & Order Entry
+JANE STREET EXECUTION SERVICES, LLC 	Equities Order Entry
+JANE STREET OPTIONS, LLC 	Equities Order Entry
+JEFFERIES LLC 	Equities Order Entry & Clearing
+JUMP TRADING, LLC 	Equities Order Entry
+LATOUR TRADING LLC 	Equities Order Entry
+LIME TRADING CORP. 	Equities Order Entry
+MERRILL LYNCH PROFESSIONAL CLEARING CORP. 	Equities Clearing
+MORGAN STANLEY & CO. LLC 	Equities Order Entry & Clearing
+NASDAQ EXECUTION SERVICES LLC 	Equities Order Entry & Clearing
+OLD MISSION CAPITAL LLC 	Equities Order Entry
+PERSHING LLC 	Equities Order Entry & Clearing
+PNT FINANCIAL LLC 	Equities Order Entry
+PUNDION LLC 	Equities Market Maker & Order Entry
+QUANTLAB BROKERAGE, LLC 	Equities Order Entry
+RBC CAPITAL MARKETS LLC 	Equities Market Maker, Order Entry & Clearing
+SANFORD C. BERNSTEIN & CO., LLC 	Equities Order Entry
+SIMPLEX TRADING, LLC 	Equities Market Maker
+SUSQUEHANNA SECURITIES 	Equities Order Entry
+TRADEBOT SYSTEMS, INC. 	Equities Order Entry & Clearing
+TRC MARKETS LLC 	Equities Order Entry
+UBS SECURITIES LLC 	Equities Order Entry & Clearing
+VIRTU AMERICAS LLC 	Equities Market Maker & Order Entry
+WEDBUSH SECURITIES INC. 	Equities Clearing
+WELLS FARGO SECURITIES, LLC 	Equities Order Entry & Clearing
+WOLVERINE EXECUTION SERVICES, LLC 	Equities Order Entry
