@@ -288,18 +288,18 @@ CREATE TABLE Is_A_Member_Of(
 
 SELECT * FROM Product
 WHERE Contract_Type = "Future"
-LIMIT 10
+LIMIT 10;
 
 SELECT * FROM Product
 WHERE Contract_Type = "Option"
-LIMIT 10
+LIMIT 10;
 
 
 SELECT * FROM Product
-LIMIT 10
+LIMIT 10;
 
 SELECT * FROM Exchange
-LIMIT 10
+LIMIT 10;
 
 SELECT * FROM AssetClass
-LIMIT 10
+LIMIT 10;
